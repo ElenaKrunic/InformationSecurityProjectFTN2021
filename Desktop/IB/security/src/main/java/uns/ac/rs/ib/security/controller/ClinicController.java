@@ -62,7 +62,7 @@ public class ClinicController {
 	}
 	
 	@PutMapping(value="/{id}", consumes = "application/json")
-	public ResponseEntity<ClinicDTO> saveClinic(@RequestBody ClinicDTO clinicDTO, @PathVariable("id") Long id) {
+	public ResponseEntity<ClinicDTO> updateClinic(@RequestBody ClinicDTO clinicDTO, @PathVariable("id") Long id) {
 		
 		Clinic clinic = clinicService.findOne(id);
 		

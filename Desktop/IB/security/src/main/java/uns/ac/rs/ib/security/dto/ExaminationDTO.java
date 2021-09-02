@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uns.ac.rs.ib.security.model.Examination;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +26,12 @@ public class ExaminationDTO {
     private Integer discount;
     private Integer duration;
     private Date date;
+    
+    public ExaminationDTO(Examination examination) {
+    	this.id = examination.getId(); 
+    	this.dataAboutExamination = examination.getDataAboutExamination(); 
+    	this.discount = examination.getDiscount(); 
+    	this.duration = examination.getDuration(); 
+    	this.date = examination.getDate(); 
+    }
 }
