@@ -9,7 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class HeathService implements Serializable {
+public class HealthSer implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
