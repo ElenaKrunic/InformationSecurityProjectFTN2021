@@ -6,6 +6,7 @@ import uns.ac.rs.ib.security.model.Examination;
 
 public interface ExaminationService {
 	
+	////////////////////////basic crud methods 
 	List<Examination> findAll(); 
 	
 	Examination findOne(Long id); 
@@ -13,5 +14,5 @@ public interface ExaminationService {
 	Examination save(Examination examination); 
 	
 	void remove(Long id);
-
+	///////////////////////////////////////////
 }

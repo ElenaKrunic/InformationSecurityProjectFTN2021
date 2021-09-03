@@ -6,6 +6,7 @@ import uns.ac.rs.ib.security.model.Assessment;
 
 public interface AssessmentService {
 
+	////////////////////////basic crud methods 
 	List<Assessment> findAll();
 
 	Assessment findOne(Long id);
@@ -13,6 +14,8 @@ public interface AssessmentService {
 	Assessment save(Assessment assessment);
 
 	void remove(Long id);
+	///////////////////////////////////////////
+
 
 
 }

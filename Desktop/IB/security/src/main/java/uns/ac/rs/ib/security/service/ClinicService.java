@@ -6,13 +6,16 @@ import uns.ac.rs.ib.security.model.Clinic;
 
 public interface ClinicService {
 
+	////////////////////////basic crud methods 
 	List<Clinic> findAll();
 
 	Clinic findOne(Long id);
 
 	Clinic save(Clinic clinic);
 
-	void remove(Long id);
+	void remove(Long id);	
+	///////////////////////////////////////////
+
 
 
 }

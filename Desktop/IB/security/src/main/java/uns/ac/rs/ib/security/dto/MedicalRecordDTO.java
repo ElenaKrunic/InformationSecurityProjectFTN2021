@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uns.ac.rs.ib.security.model.MedicalRecord;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,10 +19,17 @@ import lombok.Setter;
 @Setter
 public class MedicalRecordDTO {
 
-    private Integer id;
+	private Integer id;
     private byte certified;
 	private String therapy;
 	private String note;
 	private Date time;
-	
+
+	  public MedicalRecordDTO(MedicalRecord mr) {
+		  this.id = mr.getId(); 
+		  this.certified = mr.getCertified(); 
+		  this.therapy = mr.getTherapy(); 
+		  this.note = mr.getNote(); 
+		  this.time = mr.getTime();
+	}
 }
