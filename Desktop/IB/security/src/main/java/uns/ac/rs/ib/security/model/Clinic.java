@@ -2,6 +2,7 @@ package uns.ac.rs.ib.security.model;
 
 import lombok.*;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -25,4 +26,10 @@ public class Clinic implements Serializable {
 
     @Column(name = "_description")
     private String description;
+
+    @OneToMany(mappedBy="clinic")
+    private List<User> users;
+
+    @OneToMany(mappedBy = "clinic")
+    private List<HealthSer> healthSers;
 }

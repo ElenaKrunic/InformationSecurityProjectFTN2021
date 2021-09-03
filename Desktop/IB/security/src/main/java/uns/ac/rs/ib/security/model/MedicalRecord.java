@@ -28,4 +28,8 @@ public class MedicalRecord implements Serializable{
 
     @Column(name = "time", nullable = false)
     private Date time;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "examination_id", referencedColumnName = "id")
+    private Examination examination;
 }

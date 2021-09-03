@@ -1,6 +1,7 @@
 package uns.ac.rs.ib.security.model;
 import lombok.*;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -18,4 +19,7 @@ public class Role implements Serializable {
 
     @Column(name = "_name", nullable = false)
     private String name;
+
+    @ManyToMany(mappedBy="roles")
+    private List<User> users;
 }

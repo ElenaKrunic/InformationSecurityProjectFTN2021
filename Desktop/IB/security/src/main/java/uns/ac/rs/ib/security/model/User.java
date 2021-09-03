@@ -2,6 +2,7 @@ package uns.ac.rs.ib.security.model;
 import lombok.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -43,4 +44,28 @@ public class User implements Serializable {
 
     @Column(name = "expire", nullable = false)
     private Date expire;
+
+    @OneToMany(mappedBy="doctor")
+    private List<Examination> examinationsForDoctor;
+
+    @OneToMany(mappedBy="medicalSister")
+    private List<Examination> examinationsForMedicalSister;
+
+    @OneToMany(mappedBy="patient")
+    private List<Examination> examinationsForPatient;
+
+    @ManyToMany
+    @JoinTable(
+            name="role_has_user"
+            , joinColumns={
+            @JoinColumn(name="user_id")
+    }
+            , inverseJoinColumns={
+            @JoinColumn(name="role_id")
+    }
+    )
+    private List<Role> roles;
+
+    @ManyToOne
+    private Clinic clinic;
 }
