@@ -29,17 +29,14 @@ public class Examination implements Serializable {
     @Column(name = "_date", nullable = false)
     private Date date;
 
-    //bi-directional many-to-one association to User
     @ManyToOne
     @JoinColumn(name="doctor")
     private User doctor;
 
-    //bi-directional many-to-one association to User
     @ManyToOne
-    @JoinColumn(name="medical-sister")
+    @JoinColumn(name="medical_sister")
     private User medicalSister;
 
-    //bi-directional many-to-one association to User
     @ManyToOne
     @JoinColumn(name="patient")
     private User patient;

@@ -45,15 +45,12 @@ public class User implements Serializable {
     @Column(name = "expire", nullable = false)
     private Date expire;
 
-    //bi-directional many-to-one association to Pregled
     @OneToMany(mappedBy="doctor")
     private List<Examination> examinationsForDoctor;
 
-    //bi-directional many-to-one association to Pregled
     @OneToMany(mappedBy="medicalSister")
     private List<Examination> examinationsForMedicalSister;
 
-    //bi-directional many-to-one association to Pregled
     @OneToMany(mappedBy="patient")
     private List<Examination> examinationsForPatient;
 
