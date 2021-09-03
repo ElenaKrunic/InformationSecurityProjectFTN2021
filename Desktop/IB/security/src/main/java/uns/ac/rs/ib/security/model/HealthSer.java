@@ -1,6 +1,7 @@
 package uns.ac.rs.ib.security.model;
 import lombok.*;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
 @Entity
@@ -22,4 +23,9 @@ public class HealthSer implements Serializable {
     @Column(name = "_name", nullable = false)
     private String name;
 
+    @OneToMany(mappedBy = "healthSer")
+    private List<Examination> examinations;
+
+    @ManyToOne
+    private Clinic clinic;
 }

@@ -21,4 +21,8 @@ public class Assessment implements Serializable {
 
     @Column(name="assessment_doctor")
     private Integer assessmentDoctor;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "examination_id", referencedColumnName = "id")
+    private Examination examination;
 }
