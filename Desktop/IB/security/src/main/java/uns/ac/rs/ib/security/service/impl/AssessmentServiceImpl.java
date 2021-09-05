@@ -21,7 +21,7 @@ public class AssessmentServiceImpl implements AssessmentService{
 	}
 
 	@Override
-	public Assessment findOne(Long id) {
+	public Assessment findOne(Integer id) {
 		return assessmentRepository.getById(id);
 	}
 
@@ -31,7 +31,7 @@ public class AssessmentServiceImpl implements AssessmentService{
 	}
 
 	@Override
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		assessmentRepository.deleteById(id);
 	}
 

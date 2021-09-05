@@ -42,7 +42,7 @@ public class ExaminationController {
 	}
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<ExaminationDTO> getExamination(@PathVariable("id") Long id) {
+	public ResponseEntity<ExaminationDTO> getExamination(@PathVariable("id") Integer id) {
 		Examination examination = examinationService.findOne(id);
 		
 		if(examination == null) {
@@ -66,7 +66,7 @@ public class ExaminationController {
 	}
 	
 	@PutMapping(consumes = "application/json", value="/{id}")
-	public ResponseEntity<ExaminationDTO> updateExamination(@RequestBody ExaminationDTO examinationDTO, @PathVariable("id") Long id) {
+	public ResponseEntity<ExaminationDTO> updateExamination(@RequestBody ExaminationDTO examinationDTO, @PathVariable("id") Integer id) {
 		
 		Examination examination = examinationService.findOne(id); 
 		
@@ -85,7 +85,7 @@ public class ExaminationController {
 	}
 	
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> deleteExamination(@PathVariable("id") Long id) {
+	public ResponseEntity<Void> deleteExamination(@PathVariable("id") Integer id) {
 		Examination examination = examinationService.findOne(id); 
 		
 		if(examination != null) {

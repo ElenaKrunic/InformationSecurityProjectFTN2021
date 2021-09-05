@@ -21,7 +21,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 	}
 
 	@Override
-	public MedicalRecord findOne(Long id) {
+	public MedicalRecord findOne(Integer id) {
 		return medicalRecordRepository.getById(id);
 	}
 
@@ -31,7 +31,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 	}
 
 	@Override
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		medicalRecordRepository.deleteById(id);
 		
 	} 

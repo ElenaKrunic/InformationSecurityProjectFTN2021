@@ -9,11 +9,11 @@ public interface HealthSerService {
 	////////////////////////basic crud methods 
 	List<HealthSer> findAll();
 
-	HealthSer findOne(Long id);
+	HealthSer findOne(Integer id);
 
 	HealthSer save(HealthSer healthSer);
 
-	void remove(Long id);	
+	void remove(Integer id);
 	///////////////////////////////////////////
 
 	

@@ -40,7 +40,7 @@ public class MedicalRecordController {
 	}
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<MedicalRecordDTO> getMedicalRecord(@PathVariable("id") Long id) {
+	public ResponseEntity<MedicalRecordDTO> getMedicalRecord(@PathVariable("id") Integer id) {
 		MedicalRecord medicalRecord = medicalRecordService.findOne(id);
 		
 		if(medicalRecord == null) {
@@ -64,7 +64,7 @@ public class MedicalRecordController {
 	}
 	
 	@PutMapping(consumes="application/json", value="/{id}")
-	public ResponseEntity<MedicalRecordDTO> updateMedicalRecord(@RequestBody MedicalRecordDTO medicalRecordDTO, @PathVariable("id") Long id) {
+	public ResponseEntity<MedicalRecordDTO> updateMedicalRecord(@RequestBody MedicalRecordDTO medicalRecordDTO, @PathVariable("id") Integer id) {
 		MedicalRecord medicalRecord = medicalRecordService.findOne(id);
 		
 		medicalRecord.setCertified(medicalRecordDTO.getCertified());
@@ -78,7 +78,7 @@ public class MedicalRecordController {
 	}
 	
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> deleteMedicalRecord(@PathVariable("id") Long id) {
+	public ResponseEntity<Void> deleteMedicalRecord(@PathVariable("id") Integer id) {
 		MedicalRecord medicalRecord = medicalRecordService.findOne(id);
 		
 		if(medicalRecord != null) {

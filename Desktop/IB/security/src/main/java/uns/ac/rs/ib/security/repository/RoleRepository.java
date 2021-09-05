@@ -6,7 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import uns.ac.rs.ib.security.model.Role;
 
-@Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+import java.util.List;
 
+@Repository
+public interface RoleRepository extends JpaRepository<Role, Integer> {
+
+    List<Role> findAllByName(String name);
 }

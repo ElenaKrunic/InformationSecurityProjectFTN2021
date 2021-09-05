@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import uns.ac.rs.ib.security.model.Clinic;
 
 @Repository
-public interface ClinicRepository extends JpaRepository<Clinic, Long> {
+public interface ClinicRepository extends JpaRepository<Clinic, Integer> {
 
 }

@@ -21,7 +21,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 	}
 
 	@Override
-	public Examination findOne(Long id) {
+	public Examination findOne(Integer id) {
 		return examinationRepository.getById(id);
 	}
 
@@ -31,7 +31,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 	}
 
 	@Override
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		examinationRepository.deleteById(id);
 	}
 

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import uns.ac.rs.ib.security.model.Examination;
 
 @Repository
-public interface ExaminationRepository extends JpaRepository<Examination, Long>{
+public interface ExaminationRepository extends JpaRepository<Examination, Integer>{
 
 }

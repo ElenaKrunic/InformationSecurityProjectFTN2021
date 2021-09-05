@@ -9,11 +9,11 @@ public interface AssessmentService {
 	////////////////////////basic crud methods 
 	List<Assessment> findAll();
 
-	Assessment findOne(Long id);
+	Assessment findOne(Integer id);
 
 	Assessment save(Assessment assessment);
 
-	void remove(Long id);
+	void remove(Integer id);
 	///////////////////////////////////////////
 
 

@@ -9,10 +9,10 @@ public interface ExaminationService {
 	////////////////////////basic crud methods 
 	List<Examination> findAll(); 
 	
-	Examination findOne(Long id); 
+	Examination findOne(Integer id);
 	
 	Examination save(Examination examination); 
 	
-	void remove(Long id);
+	void remove(Integer id);
 	///////////////////////////////////////////
 }

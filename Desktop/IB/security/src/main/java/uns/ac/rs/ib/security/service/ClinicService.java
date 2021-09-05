@@ -9,11 +9,11 @@ public interface ClinicService {
 	////////////////////////basic crud methods 
 	List<Clinic> findAll();
 
-	Clinic findOne(Long id);
+	Clinic findOne(Integer id);
 
 	Clinic save(Clinic clinic);
 
-	void remove(Long id);	
+	void remove(Integer id);
 	///////////////////////////////////////////
 
 

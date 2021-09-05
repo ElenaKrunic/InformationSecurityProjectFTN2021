@@ -9,11 +9,11 @@ public interface RoleService {
 	////////////////////////basic crud methods 
 	List<Role> findAll();
 
-	Role findOne(Long id);
+	Role findOne(Integer id);
 
 	Role save(Role role);
 
-	void remove(Long id);	
+	void remove(Integer id);
 	///////////////////////////////////////////
 
 

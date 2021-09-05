@@ -41,7 +41,7 @@ public class AssessmentController {
 	}
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<AssessmentDTO> getAssessment(@PathVariable Long id) {
+	public ResponseEntity<AssessmentDTO> getAssessment(@PathVariable Integer id) {
 		Assessment a = assessmentService.findOne(id); 
 		if(a == null) {
 			return new ResponseEntity<AssessmentDTO>(HttpStatus.NOT_FOUND);
@@ -72,7 +72,7 @@ public class AssessmentController {
 	}
 	
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> deleteAssessment(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteAssessment(@PathVariable Integer id) {
 		Assessment assessment = assessmentService.findOne(id); 
 		
 

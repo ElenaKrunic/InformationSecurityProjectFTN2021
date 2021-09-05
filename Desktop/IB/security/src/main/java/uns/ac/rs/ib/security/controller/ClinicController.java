@@ -41,7 +41,7 @@ public class ClinicController {
 	}
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<ClinicDTO> getClinic(@PathVariable Long id) {
+	public ResponseEntity<ClinicDTO> getClinic(@PathVariable Integer id) {
 		Clinic clinic = clinicService.findOne(id); 
 		if(clinic == null) {
 			return new ResponseEntity<ClinicDTO>(HttpStatus.NOT_FOUND);
@@ -62,7 +62,7 @@ public class ClinicController {
 	}
 	
 	@PutMapping(value="/{id}", consumes = "application/json")
-	public ResponseEntity<ClinicDTO> updateClinic(@RequestBody ClinicDTO clinicDTO, @PathVariable("id") Long id) {
+	public ResponseEntity<ClinicDTO> updateClinic(@RequestBody ClinicDTO clinicDTO, @PathVariable("id") Integer id) {
 		
 		Clinic clinic = clinicService.findOne(id);
 		
@@ -79,7 +79,7 @@ public class ClinicController {
 	}
 	
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> deleteClinic(@PathVariable Long id) {
+	public ResponseEntity<Void> deleteClinic(@PathVariable Integer id) {
 		Clinic clinic = clinicService.findOne(id); 
 		
 

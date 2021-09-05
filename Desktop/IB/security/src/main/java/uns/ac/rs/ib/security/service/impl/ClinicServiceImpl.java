@@ -21,7 +21,7 @@ public class ClinicServiceImpl implements ClinicService {
 	}
 
 	@Override
-	public Clinic findOne(Long id) {
+	public Clinic findOne(Integer id) {
 		return clinicRepository.getById(id);
 	}
 
@@ -31,7 +31,7 @@ public class ClinicServiceImpl implements ClinicService {
 	}
 
 	@Override
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		 clinicRepository.deleteById(id);
 	}
 

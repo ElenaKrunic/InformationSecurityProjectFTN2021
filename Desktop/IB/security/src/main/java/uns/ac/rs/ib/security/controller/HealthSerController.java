@@ -42,7 +42,7 @@ public class HealthSerController {
 	}
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<HealthSerDTO> getHealthService(@PathVariable("id") Long id) {
+	public ResponseEntity<HealthSerDTO> getHealthService(@PathVariable("id") Integer id) {
 		HealthSer healthService = healthSerService.findOne(id); 
 		
 		if (healthService == null) {
@@ -64,7 +64,7 @@ public class HealthSerController {
 	}
 	
 	@PutMapping(value="id", consumes = "application/json")
-	public ResponseEntity<HealthSerDTO> updateHealthService(@RequestBody HealthSerDTO healthSerDTO, @PathVariable("id") Long id) {
+	public ResponseEntity<HealthSerDTO> updateHealthService(@RequestBody HealthSerDTO healthSerDTO, @PathVariable("id") Integer id) {
 		HealthSer healthSer = healthSerService.findOne(id);
 		
 		healthSer.setName(healthSerDTO.getName());
@@ -76,7 +76,7 @@ public class HealthSerController {
 	}
 	
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> deleteHealthService(@PathVariable("id") Long id) {
+	public ResponseEntity<Void> deleteHealthService(@PathVariable("id") Integer id) {
 		HealthSer healthSer = healthSerService.findOne(id); 
 		
 		if(healthSer != null) {

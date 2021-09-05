@@ -21,7 +21,7 @@ public class HealthSerServiceImpl implements HealthSerService {
 	}
 
 	@Override
-	public HealthSer findOne(Long id) {
+	public HealthSer findOne(Integer id) {
 		return healthSerRepository.getById(id);
 	}
 
@@ -31,7 +31,7 @@ public class HealthSerServiceImpl implements HealthSerService {
 	}
 
 	@Override
-	public void remove(Long id) {
+	public void remove(Integer id) {
 		healthSerRepository.deleteById(id);
 	}
 

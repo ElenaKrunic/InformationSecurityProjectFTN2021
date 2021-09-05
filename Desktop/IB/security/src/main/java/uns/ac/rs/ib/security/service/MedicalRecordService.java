@@ -9,11 +9,11 @@ public interface MedicalRecordService {
 	////////////////////////basic crud methods 
 	List<MedicalRecord> findAll();
 
-	MedicalRecord findOne(Long id);
+	MedicalRecord findOne(Integer id);
 	
 	MedicalRecord save(MedicalRecord medicalRecord);
 
-	void remove(Long id);	
+	void remove(Integer id);
 	///////////////////////////////////////////
 
 }
