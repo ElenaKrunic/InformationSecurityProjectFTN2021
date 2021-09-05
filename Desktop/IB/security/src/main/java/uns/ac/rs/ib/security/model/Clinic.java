@@ -32,4 +32,32 @@ public class Clinic implements Serializable {
 
     @OneToMany(mappedBy = "clinic")
     private List<HealthSer> healthSers;
+
+    public User addUser(User user) {
+        getUsers().add(user);
+        user.setClinic(this);
+
+        return user;
+    }
+
+    public User removeUser(User user) {
+        getUsers().remove(user);
+        user.setClinic(null);
+
+        return user;
+    }
+
+    public HealthSer addHealthSer(HealthSer healthSer) {
+        getHealthSers().add(healthSer);
+        healthSer.setClinic(this);
+
+        return healthSer;
+    }
+
+    public HealthSer removeHealthSer(HealthSer healthSer) {
+        getHealthSers().remove(healthSer);
+        healthSer.setClinic(null);
+
+        return healthSer;
+    }
 }

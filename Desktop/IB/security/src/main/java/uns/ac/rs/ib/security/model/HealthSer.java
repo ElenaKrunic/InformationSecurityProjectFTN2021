@@ -28,4 +28,18 @@ public class HealthSer implements Serializable {
 
     @ManyToOne
     private Clinic clinic;
+
+    public Examination addExamination(Examination examination){
+        getExaminations().add(examination);
+        examination.setHealthSer(this);
+
+        return examination;
+    }
+
+    public Examination removeExamination(Examination examination){
+        getExaminations().remove(examination);
+        examination.setHealthSer(null);
+
+        return examination;
+    }
 }

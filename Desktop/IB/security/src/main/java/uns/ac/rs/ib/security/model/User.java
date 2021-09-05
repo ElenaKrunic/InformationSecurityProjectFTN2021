@@ -68,4 +68,45 @@ public class User implements Serializable {
 
     @ManyToOne
     private Clinic clinic;
+
+    public Examination addExaminationsForDoctor(Examination examinationsForDoctor) {
+        getExaminationsForDoctor().add(examinationsForDoctor);
+        examinationsForDoctor.setDoctor(this);
+
+        return examinationsForDoctor;
+    }
+
+    public Examination removeExaminationsForDoctor(Examination examinationsForDoctor) {
+        getExaminationsForDoctor().remove(examinationsForDoctor);
+        examinationsForDoctor.setDoctor(null);
+
+        return examinationsForDoctor;
+    }
+
+    public Examination addExaminationsForMedicalSister(Examination examinationsForMedicalSister) {
+        getExaminationsForMedicalSister().add(examinationsForMedicalSister);
+        examinationsForMedicalSister.setMedicalSister(this);
+
+        return examinationsForMedicalSister;
+    }
+
+    public Examination removeExaminationsForMedicalSister(Examination examinationsForMedicalSister) {
+        getExaminationsForMedicalSister().remove(examinationsForMedicalSister);
+        examinationsForMedicalSister.setMedicalSister(null);
+
+        return examinationsForMedicalSister;
+    }
+
+    public Examination addExaminationsForPatient(Examination examinationsForPatient) {
+        getExaminationsForPatient().add(examinationsForPatient);
+        examinationsForPatient.setPatient(this);
+
+        return examinationsForPatient;
+    }
+    public Examination removeExaminationsForPatient(Examination examinationsForPatient) {
+        getExaminationsForPatient().remove(examinationsForPatient);
+        examinationsForPatient.setPatient(null);
+
+        return examinationsForPatient;
+    }
 }
