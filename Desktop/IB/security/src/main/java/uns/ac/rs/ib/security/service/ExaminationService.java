@@ -2,6 +2,7 @@ package uns.ac.rs.ib.security.service;
 
 import java.util.List;
 
+import uns.ac.rs.ib.security.dto.ExaminationDTO;
 import uns.ac.rs.ib.security.model.Examination;
 
 public interface ExaminationService {
@@ -15,4 +16,6 @@ public interface ExaminationService {
 	
 	void remove(Integer id);
 	///////////////////////////////////////////
+	
+	List<ExaminationDTO> nursesWorkCalendar(String name) throws Exception; 
 }

@@ -13,4 +13,8 @@ public interface ExaminationRepository extends JpaRepository<Examination, Intege
 
     List<Examination> findAllByDoctorAndPatient(User doctor, User patient);
     List<Examination> findAllByMedicalSisterAndPatient(User doctor, User patient);
+    
+    //is not null
+    List<Examination> findAllByMedicalSisterAndPatientNotNull(User user);
+
 }

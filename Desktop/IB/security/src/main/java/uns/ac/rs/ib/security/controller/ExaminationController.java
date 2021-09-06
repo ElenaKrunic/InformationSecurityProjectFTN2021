@@ -1,5 +1,6 @@
 package uns.ac.rs.ib.security.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +53,12 @@ public class ExaminationController {
 		return new ResponseEntity<ExaminationDTO>(new ExaminationDTO(examination), HttpStatus.OK);
 	}
 	
+	//NAPRAVITI EXAMINATION RES/REQ ZBOG DATUMA 
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ExaminationDTO> saveExamination(@RequestBody ExaminationDTO examinationDTO) {
 		Examination examination = new Examination(); 
 		examination.setDataAboutExamination(examinationDTO.getDataAboutExamination());
-		examination.setDate(examinationDTO.getDate());
+		//examination.setDate(examinationDTO.getDate());
 		examination.setDiscount(examinationDTO.getDiscount());
 		examination.setDuration(examinationDTO.getDuration());
 		
@@ -65,6 +67,7 @@ public class ExaminationController {
 		
 	}
 	
+	//NAPRAVITI EXAMINATION RES/REQ ZBOG DATUMA 
 	@PutMapping(consumes = "application/json", value="/{id}")
 	public ResponseEntity<ExaminationDTO> updateExamination(@RequestBody ExaminationDTO examinationDTO, @PathVariable("id") Integer id) {
 		
@@ -75,7 +78,7 @@ public class ExaminationController {
 		}
 		
 		examination.setDataAboutExamination(examinationDTO.getDataAboutExamination());
-		examination.setDate(examinationDTO.getDate());
+		//examination.setDate(examinationDTO.getDate());
 		examination.setDiscount(examinationDTO.getDiscount());
 		examination.setDuration(examinationDTO.getDuration());
 		
@@ -94,6 +97,17 @@ public class ExaminationController {
 		}
 		
 		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/nursesWorkCalendar")
+	public ResponseEntity<?> nursesWorkCalendar(Principal principal) {
+		try {
+			List<ExaminationDTO> examinations = examinationService.nursesWorkCalendar(principal.getName());
+			return new ResponseEntity<>(examinations, HttpStatus.OK);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
  }
