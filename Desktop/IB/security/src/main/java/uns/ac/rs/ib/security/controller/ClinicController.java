@@ -41,7 +41,7 @@ public class ClinicController {
 	}
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<ClinicDTO> getClinic(@PathVariable Integer id) {
+	public ResponseEntity<ClinicDTO> getClinic(@PathVariable("id") Integer id) {
 		Clinic clinic = clinicService.findOne(id); 
 		if(clinic == null) {
 			return new ResponseEntity<ClinicDTO>(HttpStatus.NOT_FOUND);
@@ -79,7 +79,7 @@ public class ClinicController {
 	}
 	
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Void> deleteClinic(@PathVariable Integer id) {
+	public ResponseEntity<Void> deleteClinic(@PathVariable("id") Integer id) {
 		Clinic clinic = clinicService.findOne(id); 
 		
 
