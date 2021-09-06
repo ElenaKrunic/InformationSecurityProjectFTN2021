@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import uns.ac.rs.ib.security.dto.AssessmentDTO;
+import uns.ac.rs.ib.security.dto.AssessmentDTORes;
 import uns.ac.rs.ib.security.model.Assessment;
 import uns.ac.rs.ib.security.repository.AssessmentRepository;
 import uns.ac.rs.ib.security.service.AssessmentService;
@@ -31,44 +31,44 @@ public class AssessmentController {
 	AssessmentRepository assessmentRepository; 
 	
 	@GetMapping(value="/all")
-	public ResponseEntity<List<AssessmentDTO>> getAssessments() {
+	public ResponseEntity<List<AssessmentDTORes>> getAssessments() {
 		List<Assessment> assessments = assessmentService.findAll(); 
-		List<AssessmentDTO> assessmentsDTO = new ArrayList<>();
+		List<AssessmentDTORes> assessmentsDTO = new ArrayList<>();
 		for(Assessment a : assessments) {
-			assessmentsDTO.add(new AssessmentDTO(a));
+			assessmentsDTO.add(new AssessmentDTORes(a));
 		}
-		return new ResponseEntity<List<AssessmentDTO>>(assessmentsDTO, HttpStatus.OK);
+		return new ResponseEntity<List<AssessmentDTORes>>(assessmentsDTO, HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<AssessmentDTO> getAssessment(@PathVariable("id") Integer id) {
+	public ResponseEntity<AssessmentDTORes> getAssessment(@PathVariable("id") Integer id) {
 		Assessment a = assessmentService.findOne(id); 
 		if(a == null) {
-			return new ResponseEntity<AssessmentDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<AssessmentDTORes>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<AssessmentDTO>(new AssessmentDTO(a), HttpStatus.OK);
+		return new ResponseEntity<AssessmentDTORes>(new AssessmentDTORes(a), HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = "application/json")
-	public ResponseEntity<AssessmentDTO> saveAssessment(@RequestBody AssessmentDTO adto) {
+	public ResponseEntity<AssessmentDTORes> saveAssessment(@RequestBody AssessmentDTORes adto) {
 		Assessment a = new Assessment(); 
 		a.setAssessmentDoctor(adto.getAssesmentDoctor());
 		a.setAssessmentClinic(adto.getAssesmentClinic());
 		
 		a = assessmentService.save(a); 
-		return new ResponseEntity<> (new AssessmentDTO(a), HttpStatus.CREATED);
+		return new ResponseEntity<> (new AssessmentDTORes(a), HttpStatus.CREATED);
 	}
 	
 	@PutMapping(value="/{id}", consumes = "application/json")
-	public ResponseEntity<AssessmentDTO> updateClinic(@RequestBody AssessmentDTO assessmentDTO, @PathVariable("id") Long id) {
+	public ResponseEntity<AssessmentDTORes> updateClinic(@RequestBody AssessmentDTORes assessmentDTO, @PathVariable("id") Long id) {
 		
 		Assessment a = new Assessment(); 
 		a.setAssessmentDoctor(assessmentDTO.getAssesmentDoctor());
 		a.setAssessmentClinic(assessmentDTO.getAssesmentClinic());
 		
 		a = assessmentService.save(a); 
-		return new ResponseEntity<> (new AssessmentDTO(a), HttpStatus.CREATED);
+		return new ResponseEntity<> (new AssessmentDTORes(a), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value="/{id}")

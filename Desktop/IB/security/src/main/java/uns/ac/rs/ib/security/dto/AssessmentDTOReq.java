@@ -1,8 +1,5 @@
 package uns.ac.rs.ib.security.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,14 +10,12 @@ import uns.ac.rs.ib.security.model.Assessment;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AssessmentDTO {
-	
-	private Integer id;
+public class AssessmentDTOReq {
+
 	private Integer assesmentClinic; 
 	private Integer assesmentDoctor; 
 
-	public AssessmentDTO(Assessment assessment) {
-		this.id = assessment.getId();
+	public AssessmentDTOReq(Assessment assessment) {
 		this.assesmentClinic = assessment.getAssessmentClinic(); 
 		this.assesmentDoctor = assessment.getAssessmentDoctor();
 	}

@@ -10,18 +10,15 @@ import uns.ac.rs.ib.security.model.Clinic;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ClinicDTO {
-	
-	private Integer id; 
+public class ClinicDTOReq {
+
 	private String address; 
 	private String name; 
 	private String description;
 	
-	public ClinicDTO(Clinic clinic) {
-		this.id = clinic.getId(); 
+	public ClinicDTOReq(Clinic clinic) { 
 		this.address = clinic.getAddress(); 
 		this.name = clinic.getName(); 
 		this.description = clinic.getDescription();
 	}
-
 }

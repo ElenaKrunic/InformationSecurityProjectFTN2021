@@ -31,7 +31,7 @@ public class UserDTOResponse implements Comparable<UserDTOResponse>{
 
     private byte validate;
 
-    private ClinicDTO clinicDto;
+    private ClinicDTORes clinicDto;
 
     private List<String> roles;
 

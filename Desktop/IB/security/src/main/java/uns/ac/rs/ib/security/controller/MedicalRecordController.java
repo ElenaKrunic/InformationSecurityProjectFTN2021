@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import uns.ac.rs.ib.security.dto.MedicalRecordDTO;
+import uns.ac.rs.ib.security.dto.MedicalRecordDTORes;
 import uns.ac.rs.ib.security.model.HealthSer;
 import uns.ac.rs.ib.security.model.MedicalRecord;
 import uns.ac.rs.ib.security.service.MedicalRecordService;
@@ -29,29 +29,29 @@ public class MedicalRecordController {
 	
 	
 	@GetMapping(value="/all")
-	public ResponseEntity<List<MedicalRecordDTO>> getMedicalRecords() {
+	public ResponseEntity<List<MedicalRecordDTORes>> getMedicalRecords() {
 		List<MedicalRecord> medicalRecords = medicalRecordService.findAll(); 
-		List<MedicalRecordDTO> medicalRecordsDTO = new ArrayList<>();
+		List<MedicalRecordDTORes> medicalRecordsDTO = new ArrayList<>();
 		for(MedicalRecord mr : medicalRecords) {
-			medicalRecordsDTO.add(new MedicalRecordDTO(mr));
+			medicalRecordsDTO.add(new MedicalRecordDTORes(mr));
 		}
 		
-		return new ResponseEntity<List<MedicalRecordDTO>>(medicalRecordsDTO, HttpStatus.OK);
+		return new ResponseEntity<List<MedicalRecordDTORes>>(medicalRecordsDTO, HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<MedicalRecordDTO> getMedicalRecord(@PathVariable("id") Integer id) {
+	public ResponseEntity<MedicalRecordDTORes> getMedicalRecord(@PathVariable("id") Integer id) {
 		MedicalRecord medicalRecord = medicalRecordService.findOne(id);
 		
 		if(medicalRecord == null) {
-			return new ResponseEntity<MedicalRecordDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<MedicalRecordDTORes>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<MedicalRecordDTO>(new MedicalRecordDTO(medicalRecord), HttpStatus.OK);
+		return new ResponseEntity<MedicalRecordDTORes>(new MedicalRecordDTORes(medicalRecord), HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes="application/json")
-	public ResponseEntity<MedicalRecordDTO> saveMedicalRecord(@RequestBody MedicalRecordDTO medicalRecordDTO) {
+	public ResponseEntity<MedicalRecordDTORes> saveMedicalRecord(@RequestBody MedicalRecordDTORes medicalRecordDTO) {
 		MedicalRecord medicalRecord = new MedicalRecord(); 
 		medicalRecord.setCertified(medicalRecordDTO.getCertified());
 		medicalRecord.setNote(medicalRecordDTO.getNote());
@@ -60,11 +60,11 @@ public class MedicalRecordController {
 		
 		medicalRecord = medicalRecordService.save(medicalRecord); 
 		
-		return new ResponseEntity<MedicalRecordDTO>(new MedicalRecordDTO(medicalRecord), HttpStatus.CREATED);
+		return new ResponseEntity<MedicalRecordDTORes>(new MedicalRecordDTORes(medicalRecord), HttpStatus.CREATED);
 	}
 	
 	@PutMapping(consumes="application/json", value="/{id}")
-	public ResponseEntity<MedicalRecordDTO> updateMedicalRecord(@RequestBody MedicalRecordDTO medicalRecordDTO, @PathVariable("id") Integer id) {
+	public ResponseEntity<MedicalRecordDTORes> updateMedicalRecord(@RequestBody MedicalRecordDTORes medicalRecordDTO, @PathVariable("id") Integer id) {
 		MedicalRecord medicalRecord = medicalRecordService.findOne(id);
 		
 		medicalRecord.setCertified(medicalRecordDTO.getCertified());
@@ -74,7 +74,7 @@ public class MedicalRecordController {
 		
 		medicalRecord = medicalRecordService.save(medicalRecord); 
 		
-		return new ResponseEntity<MedicalRecordDTO>(new MedicalRecordDTO(medicalRecord), HttpStatus.CREATED);
+		return new ResponseEntity<MedicalRecordDTORes>(new MedicalRecordDTORes(medicalRecord), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value="/{id}")
@@ -88,6 +88,12 @@ public class MedicalRecordController {
 		
 		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 	}
+	
+	//mojKarton
+	//kartonPacijenta
+	//dodajBelesku
+	//overa
+	//
 	
 	
 }

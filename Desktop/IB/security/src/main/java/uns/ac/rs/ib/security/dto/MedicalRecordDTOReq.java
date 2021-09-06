@@ -2,11 +2,6 @@ package uns.ac.rs.ib.security.dto;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,16 +12,14 @@ import uns.ac.rs.ib.security.model.MedicalRecord;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MedicalRecordDTO {
+public class MedicalRecordDTOReq {
 
-	private Integer id;
-    private byte certified;
+	private byte certified;
 	private String therapy;
 	private String note;
 	private Date time;
-
-	  public MedicalRecordDTO(MedicalRecord mr) {
-		  this.id = mr.getId(); 
+	
+	public MedicalRecordDTOReq(MedicalRecord mr) { 
 		  this.certified = mr.getCertified(); 
 		  this.therapy = mr.getTherapy(); 
 		  this.note = mr.getNote(); 

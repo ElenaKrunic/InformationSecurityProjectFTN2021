@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import uns.ac.rs.ib.security.dto.ClinicDTO;
+import uns.ac.rs.ib.security.dto.ClinicDTORes;
 import uns.ac.rs.ib.security.model.Clinic;
 import uns.ac.rs.ib.security.repository.ClinicRepository;
 import uns.ac.rs.ib.security.service.ClinicService;
@@ -31,38 +31,38 @@ public class ClinicController {
 	ClinicRepository clinicRepository; 
 
 	@GetMapping(value="/all")
-	public ResponseEntity<List<ClinicDTO>> getClinics() {
+	public ResponseEntity<List<ClinicDTORes>> getClinics() {
 		List<Clinic> clinics = clinicService.findAll(); 
-		List<ClinicDTO> clinicsDTO = new ArrayList<>();
+		List<ClinicDTORes> clinicsDTO = new ArrayList<>();
 		for(Clinic c : clinics) {
-			clinicsDTO.add(new ClinicDTO(c));
+			clinicsDTO.add(new ClinicDTORes(c));
 		}
-		return new ResponseEntity<List<ClinicDTO>>(clinicsDTO, HttpStatus.OK);
+		return new ResponseEntity<List<ClinicDTORes>>(clinicsDTO, HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/{id}")
-	public ResponseEntity<ClinicDTO> getClinic(@PathVariable("id") Integer id) {
+	public ResponseEntity<ClinicDTORes> getClinic(@PathVariable("id") Integer id) {
 		Clinic clinic = clinicService.findOne(id); 
 		if(clinic == null) {
-			return new ResponseEntity<ClinicDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<ClinicDTORes>(HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<ClinicDTO>(new ClinicDTO(clinic), HttpStatus.OK);
+		return new ResponseEntity<ClinicDTORes>(new ClinicDTORes(clinic), HttpStatus.OK);
 	}
 	
 	@PostMapping(consumes = "application/json")
-	public ResponseEntity<ClinicDTO> saveClinic(@RequestBody ClinicDTO clinicDTO) {
+	public ResponseEntity<ClinicDTORes> saveClinic(@RequestBody ClinicDTORes clinicDTO) {
 		Clinic clinic = new Clinic(); 
 		clinic.setAddress(clinicDTO.getAddress());
 		clinic.setDescription(clinicDTO.getDescription());
 		clinic.setName(clinicDTO.getName());
 		
 		clinic = clinicService.save(clinic); 
-		return new ResponseEntity<> (new ClinicDTO(clinic), HttpStatus.CREATED);
+		return new ResponseEntity<> (new ClinicDTORes(clinic), HttpStatus.CREATED);
 	}
 	
 	@PutMapping(value="/{id}", consumes = "application/json")
-	public ResponseEntity<ClinicDTO> updateClinic(@RequestBody ClinicDTO clinicDTO, @PathVariable("id") Integer id) {
+	public ResponseEntity<ClinicDTORes> updateClinic(@RequestBody ClinicDTORes clinicDTO, @PathVariable("id") Integer id) {
 		
 		Clinic clinic = clinicService.findOne(id);
 		
@@ -75,7 +75,7 @@ public class ClinicController {
 		clinic.setName(clinicDTO.getName());
 		
 		clinic = clinicService.save(clinic); 
-		return new ResponseEntity<> (new ClinicDTO(clinic), HttpStatus.CREATED);
+		return new ResponseEntity<> (new ClinicDTORes(clinic), HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping(value="/{id}")

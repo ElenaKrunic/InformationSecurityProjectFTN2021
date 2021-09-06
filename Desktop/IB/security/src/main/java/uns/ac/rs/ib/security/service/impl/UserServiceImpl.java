@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService{
 			tmp.setValidate(user.getValidated());
 			tmp.setAddress(user.getAddress());
 			if(user.getClinic()!=null) {
-				ClinicDTO clinicDto = new ClinicDTO();
+				ClinicDTORes clinicDto = new ClinicDTORes();
 				clinicDto.setName(user.getClinic().getName());
 				clinicDto.setAddress(user.getClinic().getAddress());
 				clinicDto.setId(user.getClinic().getId());
@@ -174,7 +174,7 @@ public class UserServiceImpl implements UserService{
 		tmp.setValidate(user.getValidated());
 		tmp.setAddress(user.getAddress());
 		if(user.getClinic()!=null) {
-			ClinicDTO clinicDTO = new ClinicDTO();
+			ClinicDTORes clinicDTO = new ClinicDTORes();
 			clinicDTO.setName(user.getClinic().getName());
 			clinicDTO.setAddress(user.getClinic().getAddress());
 			clinicDTO.setId(user.getClinic().getId());
