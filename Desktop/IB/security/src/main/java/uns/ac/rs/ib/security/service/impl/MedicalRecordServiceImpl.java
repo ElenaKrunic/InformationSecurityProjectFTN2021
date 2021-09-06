@@ -124,4 +124,29 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 		medicalRecordRepository.save(medicalRecord);
 		return "Successful!!";
 	}
+
+	@Override
+	public String verify(int id, String email) throws Exception {
+		User user = userRepository.findByEmail(email); 
+		
+		if(user == null) {
+			throw new Exception("User does not exist!"); 
+		}
+		
+		Optional<MedicalRecord> medicalRecord = medicalRecordRepository.findById(id); 
+		
+		if(medicalRecord.isEmpty()) {
+			throw new Exception("Medical record does not exist!"); 
+		}
+		
+		MedicalRecord md = medicalRecord.get(); 
+		
+		if(md.getExamination().getMedicalSister().getId() != user.getId()) {
+			throw new Exception("You are not allowed to verify this medical record!"); 
+		}
+		
+		md.setCertified((byte)1);
+		medicalRecordRepository.save(md);
+		return "Verified!";
+	}
 }
