@@ -59,11 +59,11 @@ public class UserServiceImpl implements UserService{
 	public String registerClinicAdmin(UserDTORequest userDtoRequest) throws Exception {
 		User user = userRepository.findByEmail(userDtoRequest.getEmail());
 		if(user!=null){
-			throw new Exception("Korisnik vec postoji");
+			throw new Exception("User already exists");
 		}
 		Optional<Clinic> clinicOptional = clinicRepository.findById(userDtoRequest.getIdClinic());
 		if(!clinicOptional.isPresent()){
-			throw new Exception("Klinika ne postoji");
+			throw new Exception("Clinic does not exist");
 		}
 		user = new User();
 		user.setAddress(userDtoRequest.getAddress());
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService{
 		user.setPhoneNumber(userDtoRequest.getPhone());
 //		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
 		user.setClinic(clinicOptional.get());
-		user.setRoles(rolesRepository.findAllByName("KLINIKA_ADMIN"));
+		user.setRoles(rolesRepository.findAllByName("CLINIC_ADMIN"));
 		Date date = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService{
 		date = calendar.getTime();
 		user.setExpire(date);
 		userRepository.save(user);
-		return "Clinic is successful added";
+		return "Clinic admin is successful added";
 	}
 
 	@Override
@@ -187,5 +187,121 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void changePassword(ChangePasswordDTO changePasswordDto, Principal principal) throws Exception {
 
+	}
+
+	@Override
+	public String registerClinicCenterAdmin(UserDTORequest userDtoRequest) throws Exception {
+		User user = userRepository.findByEmail(userDtoRequest.getEmail());
+		if(user!=null){
+			throw new Exception("User already exists!");
+		}
+		
+		user = new User();
+		user.setAddress(userDtoRequest.getAddress());
+		user.setEmail(userDtoRequest.getEmail());
+		user.setFirstname(userDtoRequest.getFirstname());
+		user.setLastname(userDtoRequest.getLastname());
+		user.setIdentifier(userDtoRequest.getId());
+		user.setValidated((byte)1);
+		user.setPhoneNumber(userDtoRequest.getPhone());
+//		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+		user.setRoles(rolesRepository.findAllByName("CLINIC_CENTER_ADMIN"));
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, 7);
+		date = calendar.getTime();
+		user.setExpire(date);
+		userRepository.save(user);
+		return "Clinic center admin successfully added!";
+	}
+
+	@Override
+	public String registerDoctor(UserDTORequest userDtoRequest) throws Exception {
+		User user = userRepository.findByEmail(userDtoRequest.getEmail());
+		if(user!=null){
+			throw new Exception("User already exists");
+		}
+		Optional<Clinic> clinicOptional = clinicRepository.findById(userDtoRequest.getIdClinic());
+		if(!clinicOptional.isPresent()){
+			throw new Exception("Clinic does not exist");
+		}
+		user = new User();
+		user.setAddress(userDtoRequest.getAddress());
+		user.setEmail(userDtoRequest.getEmail());
+		user.setFirstname(userDtoRequest.getFirstname());
+		user.setLastname(userDtoRequest.getLastname());
+		user.setIdentifier(userDtoRequest.getId());
+		user.setValidated((byte)1);
+		user.setPhoneNumber(userDtoRequest.getPhone());
+//		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+		user.setClinic(clinicOptional.get());
+		user.setRoles(rolesRepository.findAllByName("DOCTOR"));
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, 7);
+		date = calendar.getTime();
+		user.setExpire(date);
+		userRepository.save(user);
+		return "Doctor is successful added";
+	}
+
+	@Override
+	public String registerPatient(UserDTORequest userDtoRequest) throws Exception {
+		User user = userRepository.findByEmail(userDtoRequest.getEmail());
+		if(user!=null){
+			throw new Exception("User already exists!");
+		}
+		
+		user = new User();
+		user.setAddress(userDtoRequest.getAddress());
+		user.setEmail(userDtoRequest.getEmail());
+		user.setFirstname(userDtoRequest.getFirstname());
+		user.setLastname(userDtoRequest.getLastname());
+		user.setIdentifier(userDtoRequest.getId());
+		user.setValidated((byte)1);
+		user.setPhoneNumber(userDtoRequest.getPhone());
+//		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+		user.setRoles(rolesRepository.findAllByName("PATIENT"));
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, 7);
+		date = calendar.getTime();
+		user.setExpire(date);
+		userRepository.save(user);
+		return "Patient is successfully added!";
+	}
+
+	@Override
+	public String registerNurse(UserDTORequest userDtoRequest) throws Exception {
+		User user = userRepository.findByEmail(userDtoRequest.getEmail());
+		if(user!=null){
+			throw new Exception("User already exists");
+		}
+		Optional<Clinic> clinicOptional = clinicRepository.findById(userDtoRequest.getIdClinic());
+		if(!clinicOptional.isPresent()){
+			throw new Exception("Clinic does not exist");
+		}
+		user = new User();
+		user.setAddress(userDtoRequest.getAddress());
+		user.setEmail(userDtoRequest.getEmail());
+		user.setFirstname(userDtoRequest.getFirstname());
+		user.setLastname(userDtoRequest.getLastname());
+		user.setIdentifier(userDtoRequest.getId());
+		user.setValidated((byte)1);
+		user.setPhoneNumber(userDtoRequest.getPhone());
+//		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+		user.setClinic(clinicOptional.get());
+		user.setRoles(rolesRepository.findAllByName("NURSE"));
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, 7);
+		date = calendar.getTime();
+		user.setExpire(date);
+		userRepository.save(user);
+		return "Nurse is successful added";
 	}
 }

@@ -37,5 +37,16 @@ public interface UserService {
 	UserDTOResponse getMyProfile(String name) throws Exception;
 
 	void changePassword(ChangePasswordDTO changePasswordDto, Principal principal) throws Exception;
+	
+	String registerClinicCenterAdmin(UserDTORequest userDtoRequest) throws Exception;
+	
+	String registerDoctor(UserDTORequest userDtoRequest) throws Exception;
+	
+	String registerPatient(UserDTORequest userDtoRequest) throws Exception;
+	
+	String registerNurse(UserDTORequest userDtoRequest) throws Exception;
+
+	
+	
 
 }

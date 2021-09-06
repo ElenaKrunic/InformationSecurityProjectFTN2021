@@ -5,4 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RoleController {
 
+	//get roles 
+	//get role 
+	//add role 
+	//edit role 
 }

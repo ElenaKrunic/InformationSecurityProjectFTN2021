@@ -20,6 +20,18 @@ public class UserController {
     @Autowired
     UserService userService;
 
+   
+    @PostMapping("/register-clinic-center-admin")
+    public ResponseEntity<?> registerClinicCenterAdmin(@RequestBody UserDTORequest userDTORequest) {
+    	try {
+    		String register = userService.registerClinicCenterAdmin(userDTORequest);
+    		return new ResponseEntity<>(new StringResponseDTO(register), HttpStatus.OK);
+    	} catch(Exception e) {
+    		e.printStackTrace();
+            return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+    	}
+    }
+    
     @PostMapping("/register-clinic-admin")
     public ResponseEntity<?> registerClinicAdmin(@RequestBody UserDTORequest userDTORequest) {
         try {
@@ -29,7 +41,40 @@ public class UserController {
             return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
-
+    
+    
+    @PostMapping("/register-doctor")
+    public ResponseEntity<?> registerDoctor(@RequestBody UserDTORequest userDTORequest) {
+    	try {
+    		String register = userService.registerDoctor(userDTORequest);
+    		return new ResponseEntity<>(new StringResponseDTO(register), HttpStatus.OK);
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    		return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+    	}
+    }
+    
+    @PostMapping("/register-nurse")
+    public ResponseEntity<?> registerNurse(@RequestBody UserDTORequest userDTORequest) {
+    	try {
+    		String register = userService.registerNurse(userDTORequest);
+    		return new ResponseEntity<>(new StringResponseDTO(register), HttpStatus.OK);
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    		return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+    	}
+    }
+    @PostMapping("/register-patient")
+    public ResponseEntity<?> registerPatient(@RequestBody UserDTORequest userDTORequest) {
+    	try {
+    		String register = userService.registerPatient(userDTORequest);
+    		return new ResponseEntity<>(new StringResponseDTO(register), HttpStatus.OK);
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    		return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+    	}
+    }
+    
     @GetMapping("/all")
     public ResponseEntity<List<UserDTOResponse>> findAll() {
         List<UserDTOResponse> users = userService.findAllUsers();
@@ -86,4 +131,5 @@ public class UserController {
             return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
+        
 }
