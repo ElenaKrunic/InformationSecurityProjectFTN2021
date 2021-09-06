@@ -1,5 +1,6 @@
 package uns.ac.rs.ib.security.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import uns.ac.rs.ib.security.dto.MedicalRecordDTO;
 import uns.ac.rs.ib.security.dto.MedicalRecordDTORes;
+import uns.ac.rs.ib.security.dto.MedicialRecordDTOs;
+import uns.ac.rs.ib.security.dto.StringResponseDTO;
 import uns.ac.rs.ib.security.model.HealthSer;
 import uns.ac.rs.ib.security.model.MedicalRecord;
 import uns.ac.rs.ib.security.service.MedicalRecordService;
@@ -88,10 +92,30 @@ public class MedicalRecordController {
 		
 		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 	}
-	
+
+	@GetMapping("/record-patient/{id}")
+	public ResponseEntity<?> recordPatient(@PathVariable("id") int id, Principal principal) {
+		try {
+			List<MedicialRecordDTOs> logs = medicalRecordService.recordOfPatient(id, "milica@gmail.com");
+			return new ResponseEntity<>(logs, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/add-note")
+	public ResponseEntity<?> addNote(@RequestBody MedicalRecordDTO medicalRecordDTO, Principal principal) {
+		try {
+			String message = medicalRecordService.addNote(medicalRecordDTO, principal.getName());
+			return new ResponseEntity<>(new StringResponseDTO(message), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+	}
+
 	//mojKarton
-	//kartonPacijenta
-	//dodajBelesku
 	//overa
 	//
 	

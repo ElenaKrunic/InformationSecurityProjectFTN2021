@@ -263,6 +263,7 @@ public class UserServiceImpl implements UserService{
 		user.setValidated((byte)1);
 		user.setPhoneNumber(userDtoRequest.getPhone());
 //		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+		user.setPass(userDtoRequest.getPass());
 		user.setRoles(rolesRepository.findAllByName("PATIENT"));
 		Date date = new Date();
 		Calendar calendar = Calendar.getInstance();
@@ -293,6 +294,7 @@ public class UserServiceImpl implements UserService{
 		user.setValidated((byte)1);
 		user.setPhoneNumber(userDtoRequest.getPhone());
 //		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+		user.setPass(userDtoRequest.getPass());
 		user.setClinic(clinicOptional.get());
 		user.setRoles(rolesRepository.findAllByName("NURSE"));
 		Date date = new Date();
