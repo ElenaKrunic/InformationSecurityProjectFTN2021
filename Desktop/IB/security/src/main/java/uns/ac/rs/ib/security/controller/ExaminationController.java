@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import uns.ac.rs.ib.security.dto.ExaminationDTO;
+import uns.ac.rs.ib.security.dto.*;
 import uns.ac.rs.ib.security.model.Examination;
 import uns.ac.rs.ib.security.repository.ExaminationRepository;
 import uns.ac.rs.ib.security.service.ExaminationService;
@@ -53,7 +53,7 @@ public class ExaminationController {
 		return new ResponseEntity<ExaminationDTO>(new ExaminationDTO(examination), HttpStatus.OK);
 	}
 	
-	//NAPRAVITI EXAMINATION RES/REQ ZBOG DATUMA 
+	//NAPRAVITI EXAMINATION RES/REQ ZBOG DATUMA
 	@PostMapping(consumes = "application/json")
 	public ResponseEntity<ExaminationDTO> saveExamination(@RequestBody ExaminationDTO examinationDTO) {
 		Examination examination = new Examination(); 
@@ -67,7 +67,6 @@ public class ExaminationController {
 		
 	}
 	
-	//NAPRAVITI EXAMINATION RES/REQ ZBOG DATUMA 
 	@PutMapping(consumes = "application/json", value="/{id}")
 	public ResponseEntity<ExaminationDTO> updateExamination(@RequestBody ExaminationDTO examinationDTO, @PathVariable("id") Integer id) {
 		
@@ -78,8 +77,7 @@ public class ExaminationController {
 		}
 		
 		examination.setDataAboutExamination(examinationDTO.getDataAboutExamination());
-		//examination.setDate(examinationDTO.getDate());
-		examination.setDiscount(examinationDTO.getDiscount());
+		//examination.setDiscount(examinationDTO.getDiscount());
 		examination.setDuration(examinationDTO.getDuration());
 		
 		examination = examinationService.save(examination); 
@@ -97,17 +95,6 @@ public class ExaminationController {
 		}
 		
 		return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-	}
-	
-	@GetMapping("/nursesWorkCalendar")
-	public ResponseEntity<?> nursesWorkCalendar(Principal principal) {
-		try {
-			List<ExaminationDTO> examinations = examinationService.nursesWorkCalendar(principal.getName());
-			return new ResponseEntity<>(examinations, HttpStatus.OK);
-		} catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
 	}
 	
  }
