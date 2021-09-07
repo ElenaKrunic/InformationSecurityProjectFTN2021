@@ -21,7 +21,7 @@ import uns.ac.rs.ib.security.repository.AssessmentRepository;
 import uns.ac.rs.ib.security.service.AssessmentService;
 
 @RestController
-@RequestMapping(value = "/api/assessemnts")
+@RequestMapping(value = "/api/assessments")
 public class AssessmentController {
 
 	@Autowired
@@ -61,9 +61,9 @@ public class AssessmentController {
 	}
 	
 	@PutMapping(value="/{id}", consumes = "application/json")
-	public ResponseEntity<AssessmentDTORes> updateClinic(@RequestBody AssessmentDTORes assessmentDTO, @PathVariable("id") Long id) {
+	public ResponseEntity<AssessmentDTORes> updateAssessment(@RequestBody AssessmentDTORes assessmentDTO, @PathVariable("id") int id) {
 		
-		Assessment a = new Assessment(); 
+		Assessment a = assessmentService.findOne(id); 
 		a.setAssessmentDoctor(assessmentDTO.getAssesmentDoctor());
 		a.setAssessmentClinic(assessmentDTO.getAssesmentClinic());
 		

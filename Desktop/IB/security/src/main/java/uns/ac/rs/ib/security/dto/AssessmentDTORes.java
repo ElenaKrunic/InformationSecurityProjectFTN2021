@@ -18,10 +18,12 @@ public class AssessmentDTORes {
 	private Integer id;
 	private Integer assesmentClinic; 
 	private Integer assesmentDoctor; 
+	private ExaminationDTO examinationDTO;
 
 	public AssessmentDTORes(Assessment assessment) {
 		this.id = assessment.getId();
 		this.assesmentClinic = assessment.getAssessmentClinic(); 
 		this.assesmentDoctor = assessment.getAssessmentDoctor();
+		//this.examinationDTO = assessment.getExamination()
 	}
 }

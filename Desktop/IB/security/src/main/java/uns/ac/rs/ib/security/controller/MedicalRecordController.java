@@ -103,7 +103,8 @@ public class MedicalRecordController {
 			return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	
+	
 	@PostMapping("/add-note")
 	public ResponseEntity<?> addNote(@RequestBody MedicalRecordDTO medicalRecordDTO, Principal principal) {
 		try {
@@ -115,9 +116,16 @@ public class MedicalRecordController {
 		}
 	}
 
-	//mojKarton
-	//overa
-	//
+	@PutMapping("/verify/{id}")
+	public ResponseEntity<?> verify(@PathVariable("id") int id, Principal principal) {
+		try {
+			String verify = medicalRecordService.verify(id, principal.getName());
+			return new ResponseEntity<>(new StringResponseDTO(verify), HttpStatus.OK);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	
 }
