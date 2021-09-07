@@ -55,6 +55,8 @@ public class MedicalRecordController {
 	}
 	
 	@PostMapping(consumes="application/json")
+
+
 	public ResponseEntity<MedicalRecordDTORes> saveMedicalRecord(@RequestBody MedicalRecordDTORes medicalRecordDTO) {
 		MedicalRecord medicalRecord = new MedicalRecord(); 
 		medicalRecord.setCertified(medicalRecordDTO.getCertified());

@@ -10,7 +10,11 @@ import java.util.List;
 
 @Repository
 public interface ExaminationRepository extends JpaRepository<Examination, Integer>{
-
+    List<Examination> findAllByPatient(User user);
     List<Examination> findAllByDoctorAndPatient(User doctor, User patient);
     List<Examination> findAllByMedicalSisterAndPatient(User doctor, User patient);
+
+    List<Examination> findAllByDoctorAndPatientIsNotNull(User user);
+    List<Examination> findAllByMedicalSisterAndPatientIsNotNull(User user);
+    List<Examination> findAllByPatientIsNull();
 }
