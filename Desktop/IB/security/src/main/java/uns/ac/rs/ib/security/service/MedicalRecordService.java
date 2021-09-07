@@ -24,6 +24,8 @@ public interface MedicalRecordService {
 
 	String addNote(MedicalRecordDTO medicalRecordDTOReq, String name) throws Exception;
 	
-	String verify(int id, String email) throws Exception; 
+	String verify(int id, String email) throws Exception;
+
+	List<MedicialRecordDTOs> myRecord(String name) throws Exception;
 
 }

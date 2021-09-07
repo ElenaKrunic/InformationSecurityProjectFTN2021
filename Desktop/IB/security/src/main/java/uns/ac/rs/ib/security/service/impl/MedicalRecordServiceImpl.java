@@ -149,4 +149,23 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 		medicalRecordRepository.save(md);
 		return "Verified!";
 	}
+
+	@Override
+	public List<MedicialRecordDTOs> myRecord(String name) throws Exception {
+		User user = userRepository.findByEmail(name);
+		if (user == null) {
+			throw new Exception("Korisnik ne postoji");
+		}
+		List<MedicialRecordDTOs> response = new ArrayList<>();
+		List<MedicalRecord> logovi = medicalRecordRepository.findAllByExaminationPatient(user);
+		for (MedicalRecord zk : logovi) {
+			MedicialRecordDTOs tmp = new MedicialRecordDTOs();
+			tmp.setId(zk.getId());
+			tmp.setCertified(zk.getCertified());
+			tmp.setTime(zk.getTime());
+			tmp.setTherapy(zk.getTherapy());
+
+		}
+		return response;
+	}
 }

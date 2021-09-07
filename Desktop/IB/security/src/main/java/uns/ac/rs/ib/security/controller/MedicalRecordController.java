@@ -126,6 +126,16 @@ public class MedicalRecordController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
+
+	@GetMapping("/my-record")
+	public ResponseEntity<?> mojKarton(Principal principal) {
+		try {
+			List<MedicialRecordDTOs> logovi = medicalRecordService.myRecord("lelekrunic1@gmail.com");
+			return new ResponseEntity<>(logovi, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+	}
+
 }
