@@ -28,7 +28,7 @@ insert into health_service (id, _name, price, clinic_id) values (3, 'Mjerenje di
 insert into health_service (id, _name, price, clinic_id) values (4, 'Vadjenje krvi', 122,  2)
 insert into health_service (id, _name, price, clinic_id) values (5, 'Snimanje kostiju sake', 655, 1)
 
-insert into examination (id, data_about_examination, _date, _discount, _duration, doctor, health_ser_id, medical_sister, patient) values (1, 'Uspjesno izvadjen zubic', '2021-09-07', 0, 4, 1, 1, 5, 6)
+insert into examination (id, data_about_examination, _date, _discount, _duration, doctor, health_ser_id, medical_sister, patient) values (1, 'Uspjesno izvadjen zubic', '2021-09-07', 0, 4, 5, 1, 5, 6)
 
 insert into assessment (id, assessment_clinic, assessment_doctor, examination_id) values (1, 10, 10, 1)
 
