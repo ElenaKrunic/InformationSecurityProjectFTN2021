@@ -19,7 +19,13 @@
     <br />
     <br />
     <div style="color: #5F5F5F" >
-    	<p align="center"> This is notification about examination scheduled for ${date}. You will be examined by ${doctor} and examination is for ${examinationName} in ${clinic}. Stay safe!</p>
+    	<p align="center"> This is medical examination information. </p>
+    	<p> Examination will be performed by ${clinic} </p>
+    	<p> at ${date} . </p>
+    	<p> in ${examinationName} .</p>
+    	<p>  The service name is ${doctor} </p>
+    	<p> Stay safe! </p>
+    	<p></p>
     </div>
     <br />
 </div>

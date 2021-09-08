@@ -9,15 +9,17 @@ import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 
 import uns.ac.rs.ib.security.service.EmailService;
 import uns.ac.rs.ib.security.util.Constants;
 
 /**
  * https://www.baeldung.com/apache-velocity
- * @author Elena 
- *
+ * 
  */
+
+@Service
 public class EmailServiceImpl implements EmailService {
 	
 	@Autowired

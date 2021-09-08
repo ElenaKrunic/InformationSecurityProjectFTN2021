@@ -44,9 +44,9 @@ public class Examination implements Serializable {
     @ManyToOne
     private HealthSer healthSer;
 
-    @OneToOne(mappedBy = "examination")
+    @OneToOne(mappedBy = "examination", cascade = CascadeType.ALL,  orphanRemoval = true, fetch = FetchType.LAZY)
     private Assessment assessment;
 
-    @OneToOne(mappedBy = "examination")
+    @OneToOne(mappedBy = "examination", cascade = CascadeType.ALL,  orphanRemoval = true)
     private MedicalRecord medicalRecord;
 }

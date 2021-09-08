@@ -25,17 +25,30 @@ public class ExaminationDTO {
     private String dataAboutExamination;
     private Integer discount;
     private Integer duration;
-    private String date;
+    private Date date;
     private String serviceName; 
     private Integer servicePrice; 
     private String doctor; 
     private String patient;
     private String clinicName; 
     
+    
     public ExaminationDTO(Examination examination) {
     	this.id = examination.getId(); 
     	this.dataAboutExamination = examination.getDataAboutExamination(); 
     	this.discount = examination.getDiscount(); 
     	this.duration = examination.getDuration(); 
+    	this.date = examination.getDate();
+    	this.serviceName = examination.getHealthSer().getName();
+    	this.servicePrice = examination.getHealthSer().getPrice();
+    	this.doctor = examination.getDoctor().getFirstname() + ' ' + examination.getDoctor().getLastname(); 
+    	this.patient = examination.getPatient().getFirstname() + ' ' +  examination.getPatient().getLastname(); 
+    	this.clinicName = examination.getDoctor().getClinic().getName();
     }
+    
+    public ExaminationDTO(Integer id) {
+    	this.id = id;
+    }
+    
+    
 }

@@ -22,6 +22,7 @@ import uns.ac.rs.ib.security.model.Role;
 import uns.ac.rs.ib.security.repository.ExaminationRepository;
 import uns.ac.rs.ib.security.repository.HealthSerRepository;
 import uns.ac.rs.ib.security.repository.UserRepository;
+import uns.ac.rs.ib.security.service.EmailService;
 import uns.ac.rs.ib.security.service.ExaminationService;
 
 @Service
@@ -36,8 +37,8 @@ public class ExaminationServiceImpl implements ExaminationService {
 	@Autowired
 	HealthSerRepository healthSerRepository;
 
-//	@Autowired
-//	EmailService emailService;
+	@Autowired
+	EmailService emailService;
 
 	@Override
 	public List<Examination> findAll() {
@@ -78,7 +79,8 @@ public class ExaminationServiceImpl implements ExaminationService {
 			ExaminationDTO dto = new ExaminationDTO();
 			dto.setClinicName(e.getDoctor().getClinic().getName());
 			dto.setDataAboutExamination(e.getDataAboutExamination());
-			dto.setDate(e.getDate().toString());
+			//dto.setDate(e.getDate().toString()); --> jer je Date type Date.util u ExamDTO.
+			dto.setDate(e.getDate());
 			dto.setDiscount(e.getDiscount());
 			dto.setDoctor(e.getDoctor().getFirstname());
 			dto.setDuration(e.getDuration());
@@ -137,27 +139,42 @@ public class ExaminationServiceImpl implements ExaminationService {
 		return response;
 	}
 
+
 	@Override
 	public String createExamination(int id, String name) throws Exception {
+		
 		User user = userRepository.findByEmail(name);
 		if (user == null) {
 			throw new Exception("User doesn't exists");
 		}
+		
+		System.out.println("User je =======================================> \n" + user.getEmail());
 
 		Optional<Examination> examinationOptional = examinationRepository.findById(id);
+		
+		System.out.println("Od examinationOptional " + examinationOptional.get().getId());
+		
 		if (!examinationOptional.isPresent()) {
-			throw new Exception("Appointment doesn't exists");
+			throw new Exception("Examination doesn't exists");
 		}
+		
 		Examination examination = examinationOptional.get();
-		if (examination.getPatient() != null) {
-			throw new Exception("Appointment doesn't exists");
-		}
+		System.out.println( "Od examination " +  examination.getId());
+		
+		
+		//if (examination.getPatient() != null) {
+			//throw new Exception("Appointment doesn't exists");
+		//}
+		
 		examination.setPatient(user);
+		
 		examinationRepository.save(examination);
-//		emailService.scheduleExamination(examination.getDoctor().getClinic().getName(), examination.getHealthSer().getName(), examination.getDate().toString(), examination.getDoctor().getFirstname() + " " + examination.getDoctor().getLastname(), user.getEmail());
+		
+		emailService.scheduleExamination(examination.getDoctor().getClinic().getName(), examination.getHealthSer().getName(), examination.getDate().toString(), examination.getDoctor().getFirstname() + " " + examination.getDoctor().getLastname(), user.getEmail());
 		return "Success";
 	}
-
+	
+	
 	@Override
 	public String createAppointment(ExaminationDTOReq examinationDTOReq, String name) throws Exception {
 		User clinicAdmin = userRepository.findByEmail(name);
@@ -293,5 +310,7 @@ public class ExaminationServiceImpl implements ExaminationService {
 		}
 		return response;
 	}
+
+	
 
 }

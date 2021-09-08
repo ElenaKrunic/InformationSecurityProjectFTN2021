@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import uns.ac.rs.ib.security.dto.*;
 import uns.ac.rs.ib.security.model.Examination;
+import uns.ac.rs.ib.security.model.HealthSer;
+import uns.ac.rs.ib.security.model.User;
 import uns.ac.rs.ib.security.repository.ExaminationRepository;
 import uns.ac.rs.ib.security.service.ExaminationService;
+import uns.ac.rs.ib.security.service.HealthSerService;
 
 @RestController
 @RequestMapping(value = "/api/examinations")
@@ -30,6 +33,9 @@ public class ExaminationController {
 	
 	@Autowired
 	ExaminationRepository examinationRepository; 
+	
+	@Autowired
+	HealthSerService healthService; 
 	
 	@GetMapping(value="/all")
 	public ResponseEntity<List<ExaminationDTO>> getExaminations(){
@@ -53,37 +59,19 @@ public class ExaminationController {
 		return new ResponseEntity<ExaminationDTO>(new ExaminationDTO(examination), HttpStatus.OK);
 	}
 	
-	//NAPRAVITI EXAMINATION RES/REQ ZBOG DATUMA
-	@PostMapping(consumes = "application/json")
-	public ResponseEntity<ExaminationDTO> saveExamination(@RequestBody ExaminationDTO examinationDTO) {
-		Examination examination = new Examination(); 
-		examination.setDataAboutExamination(examinationDTO.getDataAboutExamination());
-		//examination.setDate(examinationDTO.getDate());
-		examination.setDiscount(examinationDTO.getDiscount());
-		examination.setDuration(examinationDTO.getDuration());
-		
-		examination = examinationService.save(examination); 
-		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.CREATED);
-		
-	}
 	
 	@PutMapping(consumes = "application/json", value="/{id}")
-	public ResponseEntity<ExaminationDTO> updateExamination(@RequestBody ExaminationDTO examinationDTO, @PathVariable("id") Integer id) {
-		
-		Examination examination = examinationService.findOne(id); 
-		
-		if(examination == null) {
-			return new ResponseEntity<ExaminationDTO>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<?> saveExamination(@PathVariable("id") int id, Principal principal) {
+		try {
+			//String mess = examinationService.createExamination(id, principal.getName());
+			String mess = examinationService.createExamination(id, "lelekrunic1@gmail.com");
+			return new ResponseEntity<>(new StringResponseDTO(mess), HttpStatus.OK);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
-		examination.setDataAboutExamination(examinationDTO.getDataAboutExamination());
-		//examination.setDiscount(examinationDTO.getDiscount());
-		examination.setDuration(examinationDTO.getDuration());
-		
-		examination = examinationService.save(examination); 
-		return new ResponseEntity<>(new ExaminationDTO(examination), HttpStatus.CREATED);
-		
 	}
+	
 	
 	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Void> deleteExamination(@PathVariable("id") Integer id) {
@@ -117,6 +105,7 @@ public class ExaminationController {
 		}
 	}
 
+
 	@PutMapping("/order-examination/{id}")
 	public ResponseEntity<?> orderExamination(@PathVariable("id") int id, Principal principal) {
 		try {
@@ -126,6 +115,7 @@ public class ExaminationController {
 			return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 	}
+	
 
 	@PostMapping("/order-appointment")
 	public ResponseEntity<?> orderAppointment(@RequestBody ExaminationDTOReq examinationDTOReq, Principal principal){

@@ -27,7 +27,7 @@ public interface ExaminationService {
 	List<ExaminationDTORes> availableTerms(String name);
 
 	String createExamination(int id, String name) throws Exception;
-
+	
 	String createAppointment(ExaminationDTOReq examinationDTOReq, String name) throws Exception;
 
 	List<SimpleSelectDTORes> doctors(String name) throws Exception;
