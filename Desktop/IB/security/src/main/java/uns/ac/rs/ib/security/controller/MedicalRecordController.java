@@ -94,9 +94,9 @@ public class MedicalRecordController {
 	}
 
 	@GetMapping("/record-patient/{id}")
-	public ResponseEntity<?> recordPatient(@PathVariable("id") int id, Principal principal) {
+	public ResponseEntity<?> recordPatient(@PathVariable("id") int id) {//, Principal principal
 		try {
-			List<MedicialRecordDTOs> logs = medicalRecordService.recordOfPatient(id, "milica@gmail.com");
+			List<MedicialRecordDTOs> logs = medicalRecordService.recordOfPatient(id, "jevrosimatajna@gmail.com");
 			return new ResponseEntity<>(logs, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,9 +106,9 @@ public class MedicalRecordController {
 	
 	
 	@PostMapping("/add-note")
-	public ResponseEntity<?> addNote(@RequestBody MedicalRecordDTO medicalRecordDTO, Principal principal) {
+	public ResponseEntity<?> addNote(@RequestBody MedicalRecordDTO medicalRecordDTO) {//, Principal principal
 		try {
-			String message = medicalRecordService.addNote(medicalRecordDTO, principal.getName());
+			String message = medicalRecordService.addNote(medicalRecordDTO, "jevrosimatajna@gmail.com");
 			return new ResponseEntity<>(new StringResponseDTO(message), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,6 +124,8 @@ public class MedicalRecordController {
 		} catch(Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+
 		}
 	}
 

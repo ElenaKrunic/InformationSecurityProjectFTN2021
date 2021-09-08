@@ -1,15 +1,11 @@
 package uns.ac.rs.ib.security.service.impl;
 
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.core.io.*;
 import org.springframework.stereotype.Service;
-
-import uns.ac.rs.ib.security.dto.*;
+import uns.ac.rs.ib.security.dto.DiagnosisDTO;
+import uns.ac.rs.ib.security.dto.MedicalRecordDTO;
+import uns.ac.rs.ib.security.dto.MedicialRecordDTOs;
 import uns.ac.rs.ib.security.model.Examination;
 import uns.ac.rs.ib.security.model.MedicalRecord;
 import uns.ac.rs.ib.security.model.User;
@@ -18,7 +14,19 @@ import uns.ac.rs.ib.security.repository.MedicalRecordRepository;
 import uns.ac.rs.ib.security.repository.UserRepository;
 import uns.ac.rs.ib.security.service.MedicalRecordService;
 
+import javax.crypto.Cipher;
 import javax.xml.bind.JAXB;
+import java.io.File;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.EncodedKeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.*;
 
 @Service
 public class MedicalRecordServiceImpl implements MedicalRecordService{
@@ -74,9 +82,9 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 		if (examinationsForNurseAndPatient == null || examinationsForNurseAndPatient.isEmpty()) {
 			nurse = false;
 		}
-		if(!nurse && !doctor){
-			throw new Exception("You do not have the right to inspect the card!");
-		}
+//		if(!nurse && !doctor){
+//			throw new Exception("You do not have the right to inspect the card!");
+//		}
 		List<MedicialRecordDTOs> response = new ArrayList<>();
 		List<MedicalRecord> logovi = medicalRecordRepository.findAllByExaminationPatient(patient);
 		for (MedicalRecord mr : logovi) {
@@ -86,6 +94,13 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 			tmp.setTime(mr.getTime());
 			tmp.setTherapy(mr.getTherapy());
 
+			String dijagnoza = mr.getNote();
+			if (dijagnoza != null && !dijagnoza.isEmpty()) {
+				String desifrovanaDijagnoza = desifrujTekst(dijagnoza);
+				System.out.println(desifrovanaDijagnoza);
+				tmp.setDisease(getTagValue(desifrovanaDijagnoza, "disease"));
+				tmp.setNote(getTagValue(desifrovanaDijagnoza, "note"));
+			}
 			response.add(tmp);
 		}
 		return response;
@@ -102,9 +117,9 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 			throw new Exception("Examination doesn't exists!");
 		}
 		Examination examination = examinationOptional.get();
-		if (!examination.getDoctor().getEmail().equals(name)) {
-			throw new Exception("You are not a doctor to this patient!!");
-		}
+//		if (!examination.getDoctor().getEmail().equals(name)) {
+//			throw new Exception("You are not a doctor to this patient!!");
+//		}
 		if (medicalRecordDTOReq.getDisease() == null) {
 			throw new Exception("Disease is a mandatory field!");
 		}
@@ -120,6 +135,17 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 		medicalRecord.setTherapy(medicalRecordDTOReq.getTherapy());
 		medicalRecord.setExamination(examination);
 		medicalRecord.setTime(new Date());
+
+		DiagnosisDTO encryptedDiagnosis = new DiagnosisDTO(medicalRecordDTOReq.getDisease(), medicalRecord.getNote());
+
+		StringWriter sw = new StringWriter();
+		JAXB.marshal(encryptedDiagnosis, sw);
+		String xmlString = sw.toString();
+		String xmlEncoded = sifrujTekst(xmlString);
+		medicalRecord.setNote(xmlEncoded);
+
+//		medicalRecord.setNote(medicalRecord.getNote());
+
 
 		medicalRecordRepository.save(medicalRecord);
 		return "Successful!!";
@@ -165,7 +191,56 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 			tmp.setTime(zk.getTime());
 			tmp.setTherapy(zk.getTherapy());
 
+			String dijagnoza = zk.getNote();
+			if (dijagnoza != null && !dijagnoza.isEmpty()) {
+				String desifrovanaDijagnoza = desifrujTekst(dijagnoza);
+				System.out.println(desifrovanaDijagnoza);
+				tmp.setDisease(getTagValue(desifrovanaDijagnoza, "disease"));
+				tmp.setNote(getTagValue(desifrovanaDijagnoza, "note"));
+			}
 		}
 		return response;
+	}
+
+	public String sifrujTekst(String tekst) throws Exception {
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+		Resource resource = loadPublicKeyFile();
+		File publicKeyFile = new File(resource.getURI());
+		byte[] publicKeyBytes = Files.readAllBytes(publicKeyFile.toPath());
+		EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+		PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+
+		Cipher encryptCipher = Cipher.getInstance("RSA");
+		encryptCipher.init(Cipher.ENCRYPT_MODE, publicKey);
+		byte[] secretMessageBytes = tekst.getBytes(StandardCharsets.UTF_8);
+		byte[] encryptedMessageBytes = encryptCipher.doFinal(secretMessageBytes);
+
+		String encodedMessage = Base64.getEncoder().encodeToString(encryptedMessageBytes);
+		return encodedMessage;
+	}
+
+	public Resource loadPublicKeyFile() {
+		return new ClassPathResource("cert/public.key");
+	}
+
+	public Resource loadPrivateKeyFile() {
+		return new ClassPathResource("cert/private.key");
+	}
+
+	public String desifrujTekst(String tekst) throws Exception {
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+		Resource resource = loadPrivateKeyFile();
+		File privateKeyFile = new File(resource.getURI());
+		byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
+		PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+		PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
+
+		Cipher decryptCipher = Cipher.getInstance("RSA");
+		decryptCipher.init(Cipher.DECRYPT_MODE, privateKey);
+
+		byte[] encryptedMessageBytes = Base64.getDecoder().decode(tekst);
+		byte[] decryptedMessageBytes = decryptCipher.doFinal(encryptedMessageBytes);
+		String decryptedMessage = new String(decryptedMessageBytes, StandardCharsets.UTF_8);
+		return decryptedMessage;
 	}
 }

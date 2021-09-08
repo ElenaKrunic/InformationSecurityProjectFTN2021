@@ -23,7 +23,7 @@ public class MedicalRecord implements Serializable{
     @Column(name = "therapy", nullable = false)
     private String therapy;
 
-    @Column(name = "note", nullable = false)
+    @Column(name = "note",  length=512)
     private String note;
 
     @Column(name = "time", nullable = false)
