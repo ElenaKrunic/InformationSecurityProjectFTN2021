@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class ClinicController {
 	ClinicRepository clinicRepository; 
 
 	@GetMapping(value="/all")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN') || hasAuthority('PATIENT')")
 	public ResponseEntity<List<ClinicDTORes>> getClinics() {
 		List<Clinic> clinics = clinicService.findAll(); 
 		List<ClinicDTORes> clinicsDTO = new ArrayList<>();
@@ -40,7 +42,9 @@ public class ClinicController {
 		return new ResponseEntity<List<ClinicDTORes>>(clinicsDTO, HttpStatus.OK);
 	}
 	
+	
 	@GetMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN') || hasAuthority('PATIENT')")
 	public ResponseEntity<ClinicDTORes> getClinic(@PathVariable("id") Integer id) {
 		Clinic clinic = clinicService.findOne(id); 
 		if(clinic == null) {
@@ -51,6 +55,7 @@ public class ClinicController {
 	}
 	
 	@PostMapping(consumes = "application/json")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<ClinicDTORes> saveClinic(@RequestBody ClinicDTORes clinicDTO) {
 		Clinic clinic = new Clinic(); 
 		clinic.setAddress(clinicDTO.getAddress());
@@ -62,6 +67,7 @@ public class ClinicController {
 	}
 	
 	@PutMapping(value="/{id}", consumes = "application/json")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<ClinicDTORes> updateClinic(@RequestBody ClinicDTORes clinicDTO, @PathVariable("id") Integer id) {
 		
 		Clinic clinic = clinicService.findOne(id);
@@ -79,6 +85,8 @@ public class ClinicController {
 	}
 	
 	@DeleteMapping(value="/{id}")
+	
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<Void> deleteClinic(@PathVariable("id") Integer id) {
 		Clinic clinic = clinicService.findOne(id); 
 		

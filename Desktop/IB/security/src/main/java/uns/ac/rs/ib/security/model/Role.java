@@ -4,13 +4,15 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 
+import org.springframework.security.core.GrantedAuthority;
+
 @Entity
 @Table(name="role")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Role implements Serializable {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -22,4 +24,11 @@ public class Role implements Serializable {
 
     @ManyToMany(mappedBy="roles")
     private List<User> users;
+
+	@Override
+	public String getAuthority() {
+		return name;
+	}
+    
+    
 }

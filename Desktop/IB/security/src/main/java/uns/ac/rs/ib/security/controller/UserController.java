@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -77,6 +78,7 @@ public class UserController {
     */
     
     @PostMapping("/register-clinic-center-admin")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<?> registerClinicCenterAdmin(@RequestBody UserDTORequest userDTORequest) {
     	try {
     		String register = userService.registerClinicCenterAdmin(userDTORequest);
@@ -88,6 +90,7 @@ public class UserController {
     }
     
     @PostMapping("/register-clinic-admin")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<?> registerClinicAdmin(@RequestBody UserDTORequest userDTORequest) {
         try {
             String mess = userService.registerClinicAdmin(userDTORequest);
@@ -99,6 +102,7 @@ public class UserController {
     
     
     @PostMapping("/register-doctor")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
     public ResponseEntity<?> registerDoctor(@RequestBody UserDTORequest userDTORequest) {
     	try {
     		String register = userService.registerDoctor(userDTORequest);
@@ -110,6 +114,7 @@ public class UserController {
     }
     
     @PostMapping("/register-nurse")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
     public ResponseEntity<?> registerNurse(@RequestBody UserDTORequest userDTORequest) {
     	try {
     		String register = userService.registerNurse(userDTORequest);
@@ -120,6 +125,7 @@ public class UserController {
     	}
     }
     @PostMapping("/register-patient")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<?> registerPatient(@RequestBody UserDTORequest userDTORequest) {
     	try {
     		String register = userService.registerPatient(userDTORequest);
@@ -131,12 +137,14 @@ public class UserController {
     }
     
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<List<UserDTOResponse>> findAll() {
         List<UserDTOResponse> users = userService.findAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PutMapping("/validate/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<?> ban(@PathVariable("id") Integer id) {
         try {
             String mess = userService.validate(id);
@@ -147,6 +155,7 @@ public class UserController {
     }
 
     @PutMapping("/unvalidate/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<?> unban(@PathVariable("id") Integer id) {
         try {
             String mess = userService.unvalidate(id);
@@ -157,6 +166,7 @@ public class UserController {
     }
 
     @PutMapping("/edit")
+    @PreAuthorize("hasAuthority('PATIENT') || hasAuthority('NURSE') || hasAuthority('DOCTOR') ")
     public ResponseEntity<?> editProfile(@RequestBody UserDTOEdit userDTORequest, Principal principal) {
         try {
             String poruka = userService.editProfile(userDTORequest, principal.getName());

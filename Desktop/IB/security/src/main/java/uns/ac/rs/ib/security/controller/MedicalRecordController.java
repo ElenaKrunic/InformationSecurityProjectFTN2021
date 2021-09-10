@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class MedicalRecordController {
 	
 	
 	@GetMapping(value="/all")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<List<MedicalRecordDTORes>> getMedicalRecords() {
 		List<MedicalRecord> medicalRecords = medicalRecordService.findAll(); 
 		List<MedicalRecordDTORes> medicalRecordsDTO = new ArrayList<>();
@@ -44,6 +46,7 @@ public class MedicalRecordController {
 	}
 	
 	@GetMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<MedicalRecordDTORes> getMedicalRecord(@PathVariable("id") Integer id) {
 		MedicalRecord medicalRecord = medicalRecordService.findOne(id);
 		
@@ -55,6 +58,7 @@ public class MedicalRecordController {
 	}
 	
 	@PostMapping(consumes="application/json")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<MedicalRecordDTORes> saveMedicalRecord(@RequestBody MedicalRecordDTORes medicalRecordDTO) {
 		MedicalRecord medicalRecord = new MedicalRecord(); 
 		medicalRecord.setCertified(medicalRecordDTO.getCertified());
@@ -68,6 +72,7 @@ public class MedicalRecordController {
 	}
 	
 	@PutMapping(consumes="application/json", value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<MedicalRecordDTORes> updateMedicalRecord(@RequestBody MedicalRecordDTORes medicalRecordDTO, @PathVariable("id") Integer id) {
 		MedicalRecord medicalRecord = medicalRecordService.findOne(id);
 		
@@ -82,6 +87,7 @@ public class MedicalRecordController {
 	}
 	
 	@DeleteMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<Void> deleteMedicalRecord(@PathVariable("id") Integer id) {
 		MedicalRecord medicalRecord = medicalRecordService.findOne(id);
 		
@@ -94,6 +100,7 @@ public class MedicalRecordController {
 	}
 
 	@GetMapping("/record-patient/{id}")
+    @PreAuthorize("hasAuthority('DOCTOR') || hasAuthority('NURSE')")
 	public ResponseEntity<?> recordPatient(@PathVariable("id") int id) {//, Principal principal
 		try {
 			List<MedicialRecordDTOs> logs = medicalRecordService.recordOfPatient(id, "jevrosimatajna@gmail.com");
@@ -106,6 +113,7 @@ public class MedicalRecordController {
 	
 	
 	@PostMapping("/add-note")
+    @PreAuthorize("hasAuthority('DOCTOR')")
 	public ResponseEntity<?> addNote(@RequestBody MedicalRecordDTO medicalRecordDTO) {//, Principal principal
 		try {
 			String message = medicalRecordService.addNote(medicalRecordDTO, "jevrosimatajna@gmail.com");
@@ -117,6 +125,7 @@ public class MedicalRecordController {
 	}
 
 	@PutMapping("/verify/{id}")
+    @PreAuthorize("hasAuthority('NURSE')")
 	public ResponseEntity<?> verify(@PathVariable("id") int id, Principal principal) {
 		try {
 			String verify = medicalRecordService.verify(id, principal.getName());
@@ -130,6 +139,7 @@ public class MedicalRecordController {
 	}
 
 	@GetMapping("/my-record")
+    @PreAuthorize("hasAuthority('PATIENT')")
 	public ResponseEntity<?> mojKarton(Principal principal) {
 		try {
 			List<MedicialRecordDTOs> logovi = medicalRecordService.myRecord("lelekrunic1@gmail.com");

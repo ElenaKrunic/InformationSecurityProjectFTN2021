@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class RoleController {
 	RoleService roleService; 
 	
 	@GetMapping(value="/all")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<List<RoleDTO>> getRoles(){
 		List<Role> roles = roleService.findAll();
 		List<RoleDTO> rolesDTO = new ArrayList<>();
@@ -38,6 +40,7 @@ public class RoleController {
 	}
 	
 	@GetMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<RoleDTO> getRole(@PathVariable("id") Integer id) {
 		Role role = roleService.findOne(id);
 		if(role == null) {
@@ -48,6 +51,7 @@ public class RoleController {
 	}
 	
 	@PostMapping(consumes="application/json")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<RoleDTO> saveRole(@RequestBody RoleDTO roleDTO) {
 		Role role = new Role(); 
 		role.setName(roleDTO.getName());
@@ -57,6 +61,7 @@ public class RoleController {
 	}
 	
 	@PutMapping(value="/{id}", consumes = "application/json")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<RoleDTO> updateRole(@RequestBody RoleDTO roleDTO, @PathVariable("id") Integer id) {
 		 
 		Role role = roleService.findOne(id); 
@@ -73,6 +78,7 @@ public class RoleController {
 	}
 	
 	@DeleteMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<Void> deleteRole(@PathVariable("id") Integer id) {
 		Role role = roleService.findOne(id); 
 		

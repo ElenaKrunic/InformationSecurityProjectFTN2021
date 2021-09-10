@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ public class ExaminationController {
 	HealthSerService healthService; 
 	
 	@GetMapping(value="/all")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<List<ExaminationDTO>> getExaminations(){
 		List<Examination> examinations = examinationService.findAll(); 
 		List<ExaminationDTO> examinationsDTO = new ArrayList<>();
@@ -49,6 +51,7 @@ public class ExaminationController {
 	}
 	
 	@GetMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<ExaminationDTO> getExamination(@PathVariable("id") Integer id) {
 		Examination examination = examinationService.findOne(id);
 		
@@ -60,7 +63,8 @@ public class ExaminationController {
 	}
 	
 	
-	@PutMapping(consumes = "application/json", value="/{id}")
+	@PutMapping(consumes = "application/json", value="/saveExamination/{id}")
+    @PreAuthorize("hasAuthority('PATIENT')")
 	public ResponseEntity<?> saveExamination(@PathVariable("id") int id, Principal principal) {
 		try {
 			//String mess = examinationService.createExamination(id, principal.getName());
@@ -74,6 +78,7 @@ public class ExaminationController {
 	
 	
 	@DeleteMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<Void> deleteExamination(@PathVariable("id") Integer id) {
 		Examination examination = examinationService.findOne(id); 
 		
@@ -86,6 +91,7 @@ public class ExaminationController {
 	}
 
 	@GetMapping("/history-еxamination")
+    @PreAuthorize("hasAuthority('PATIENT')")
 	public ResponseEntity<?> historyExamination(Principal principal) {
 		try {
 			List<ExaminationDTORes> еxaminations = examinationService.historyExamination(principal.getName());
@@ -96,6 +102,7 @@ public class ExaminationController {
 	}
 
 	@GetMapping("/available-terms")
+    @PreAuthorize("hasAuthority('PATIENT')")
 	public ResponseEntity<?> availableTerms(Principal principal) {
 		try {
 			List<ExaminationDTORes> еxaminations = examinationService.availableTerms(principal.getName());
@@ -107,6 +114,7 @@ public class ExaminationController {
 
 
 	@PutMapping("/order-examination/{id}")
+    @PreAuthorize("hasAuthority('PATIENT')")
 	public ResponseEntity<?> orderExamination(@PathVariable("id") int id, Principal principal) {
 		try {
 			String message = examinationService.createExamination(id, principal.getName());
@@ -118,6 +126,7 @@ public class ExaminationController {
 	
 
 	@PostMapping("/order-appointment")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<?> orderAppointment(@RequestBody ExaminationDTOReq examinationDTOReq, Principal principal){
 		try {
 			String message = examinationService.createAppointment(examinationDTOReq, principal.getName());
@@ -128,6 +137,7 @@ public class ExaminationController {
 	}
 
 	@GetMapping("/doctors")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<?> doctors(Principal principal) {
 		try {
 			List<SimpleSelectDTORes> doctors = examinationService.doctors(principal.getName());
@@ -138,6 +148,7 @@ public class ExaminationController {
 	}
 
 	@GetMapping("/nurses")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<?> nurses(Principal principal) {
 		try {
 			List<SimpleSelectDTORes> nurses = examinationService.nurses("lelekrunic1@gmail.com");
@@ -148,6 +159,7 @@ public class ExaminationController {
 	}
 
 	@GetMapping("/services")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<?> services(Principal principal) {
 		try {
 			List<SimpleSelectDTORes> sers = examinationService.services(principal.getName());
@@ -158,6 +170,7 @@ public class ExaminationController {
 	}
 
 	@GetMapping("/working-calendar")
+    @PreAuthorize("hasAuthority('DOCTOR')")
 	public ResponseEntity<?> workingCalendar(Principal principal) {
 		try {
 			List<ExaminationDTORes> examinations = examinationService.workCalendar(principal.getName());
@@ -168,6 +181,7 @@ public class ExaminationController {
 	}
 
 	@GetMapping("/working-calendar-for-nurse")
+    @PreAuthorize("hasAuthority('NURSE')")
 	public ResponseEntity<?> workingCalendarForNurse(Principal principal) {
 		try {
 			List<ExaminationDTO> examinations = examinationService.nursesWorkCalendar("lelekrunic1@gmail.com");

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class AssessmentController {
 	ExaminationService examinationService; 
 	
 	@GetMapping(value="/all")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<List<AssessmentDTORes>> getAssessments() {
 		List<Assessment> assessments = assessmentService.findAll(); 
 		List<AssessmentDTORes> assessmentsDTO = new ArrayList<>();
@@ -46,6 +48,7 @@ public class AssessmentController {
 	}
 	
 	@GetMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<AssessmentDTORes> getAssessment(@PathVariable("id") Integer id) {
 		Assessment a = assessmentService.findOne(id); 
 		if(a == null) {
@@ -58,6 +61,7 @@ public class AssessmentController {
 	//exc int after, when fe incl.  
 	//one to one problem
 	@PostMapping(consumes = "application/json")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<AssessmentDTORes> saveAssessment(@RequestBody AssessmentDTORes adto){
 		Assessment a = new Assessment(); 
 		Examination examination = examinationService.findOne(adto.getExaminationDTO().getId());
@@ -72,6 +76,7 @@ public class AssessmentController {
 	}
 	
 	@PutMapping(value="/{id}", consumes = "application/json")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<AssessmentDTORes> updateAssessment(@RequestBody AssessmentDTORes assessmentDTO, @PathVariable("id") int id) {
 		
 		Assessment a = assessmentService.findOne(id); 
@@ -84,6 +89,7 @@ public class AssessmentController {
 	
 	//one to one pa se brise i examination
 	@DeleteMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<Void> deleteAssessment(@PathVariable("id") Integer id) {
 		Assessment assessment = assessmentService.findOne(id); 
 		

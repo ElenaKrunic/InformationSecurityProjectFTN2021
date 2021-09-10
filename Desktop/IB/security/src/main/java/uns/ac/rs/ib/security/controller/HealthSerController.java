@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class HealthSerController {
 	HealthSerRepository healthSerRepository;
 	
 	@GetMapping(value="/all")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<List<HealthSerDTO>> getHealthServices() {
 		List<HealthSer> healthServices = healthSerService.findAll(); 
 		List<HealthSerDTO> healthServicesDTO = new ArrayList<>();
@@ -42,6 +44,7 @@ public class HealthSerController {
 	}
 	
 	@GetMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<HealthSerDTO> getHealthService(@PathVariable("id") Integer id) {
 		HealthSer healthService = healthSerService.findOne(id); 
 		
@@ -53,6 +56,7 @@ public class HealthSerController {
 	}
 	
 	@PostMapping(consumes = "application/json")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<HealthSerDTO> saveHealthService(@RequestBody HealthSerDTO healthSerDTO) {
 		HealthSer healthSer = new HealthSer();
 		healthSer.setName(healthSerDTO.getName());
@@ -64,6 +68,7 @@ public class HealthSerController {
 	}
 	
 	@PutMapping(value="id", consumes = "application/json")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<HealthSerDTO> updateHealthService(@RequestBody HealthSerDTO healthSerDTO, @PathVariable("id") Integer id) {
 		HealthSer healthSer = healthSerService.findOne(id);
 		
@@ -76,6 +81,7 @@ public class HealthSerController {
 	}
 	
 	@DeleteMapping(value="/{id}")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
 	public ResponseEntity<Void> deleteHealthService(@PathVariable("id") Integer id) {
 		HealthSer healthSer = healthSerService.findOne(id); 
 		
