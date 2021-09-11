@@ -26,4 +26,6 @@ public class UserDTORequest {
     private String email;
 
     private Integer idClinic;
+    
+    private String identifier; 
 }

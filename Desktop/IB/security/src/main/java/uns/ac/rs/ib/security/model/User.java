@@ -109,4 +109,7 @@ public class User implements Serializable {
 
         return examinationsForPatient;
     }
+    
+    //napraviti set Password for user metodu 
+    
 }

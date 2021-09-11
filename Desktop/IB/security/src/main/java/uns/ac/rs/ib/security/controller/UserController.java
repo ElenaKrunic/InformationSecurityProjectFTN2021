@@ -124,8 +124,9 @@ public class UserController {
     		return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
     	}
     }
+    
     @PostMapping("/register-patient")
-    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
+    //@PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<?> registerPatient(@RequestBody UserDTORequest userDTORequest) {
     	try {
     		String register = userService.registerPatient(userDTORequest);

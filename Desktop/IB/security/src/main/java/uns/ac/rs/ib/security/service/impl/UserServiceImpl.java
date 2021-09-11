@@ -1,10 +1,13 @@
 package uns.ac.rs.ib.security.service.impl;
 
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.security.SecureRandom;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 import uns.ac.rs.ib.security.dto.*;
 import uns.ac.rs.ib.security.model.Clinic;
@@ -13,7 +16,9 @@ import uns.ac.rs.ib.security.model.User;
 import uns.ac.rs.ib.security.repository.ClinicRepository;
 import uns.ac.rs.ib.security.repository.RoleRepository;
 import uns.ac.rs.ib.security.repository.UserRepository;
+import uns.ac.rs.ib.security.security.PasswordStorage;
 import uns.ac.rs.ib.security.service.UserService;
+import uns.ac.rs.ib.security.util.Base64;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -247,33 +252,7 @@ public class UserServiceImpl implements UserService{
 		return "Doctor is successful added";
 	}
 
-	@Override
-	public String registerPatient(UserDTORequest userDtoRequest) throws Exception {
-		User user = userRepository.findByEmail(userDtoRequest.getEmail());
-		if(user!=null){
-			throw new Exception("User already exists!");
-		}
-		
-		user = new User();
-		user.setAddress(userDtoRequest.getAddress());
-		user.setEmail(userDtoRequest.getEmail());
-		user.setFirstname(userDtoRequest.getFirstname());
-		user.setLastname(userDtoRequest.getLastname());
-		user.setIdentifier(userDtoRequest.getId());
-		user.setValidated((byte)1);
-		user.setPhoneNumber(userDtoRequest.getPhone());
-//		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
-		user.setPass(userDtoRequest.getPass());
-		user.setRoles(rolesRepository.findAllByName("PATIENT"));
-		Date date = new Date();
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.add(Calendar.DAY_OF_MONTH, 7);
-		date = calendar.getTime();
-		user.setExpire(date);
-		userRepository.save(user);
-		return "Patient is successfully added!";
-	}
+
 
 	@Override
 	public String registerNurse(UserDTORequest userDtoRequest) throws Exception {
@@ -306,4 +285,44 @@ public class UserServiceImpl implements UserService{
 		userRepository.save(user);
 		return "Nurse is successful added";
 	}
+	
+	@Override
+	public String registerPatient(UserDTORequest userDtoRequest) throws Exception {
+		User user = userRepository.findByEmail(userDtoRequest.getEmail());
+		if(user!=null){
+			throw new Exception("User already exists!");
+		}
+		
+		byte[] salt = PasswordStorage.generateSalt();
+		String password = userDtoRequest.getPass(); 
+		
+		byte[] hashedPassword = PasswordStorage.hashPassword(password, salt);
+		System.out.println("Hesovana lozinka je " + PasswordStorage.base64Encode(hashedPassword));
+		
+		
+		user = new User();
+		user.setAddress(userDtoRequest.getAddress());
+		user.setEmail(userDtoRequest.getEmail());
+		user.setFirstname(userDtoRequest.getFirstname());
+		user.setLastname(userDtoRequest.getLastname());
+		user.setIdentifier(userDtoRequest.getIdentifier());
+		user.setValidated((byte)1);
+		user.setPhoneNumber(userDtoRequest.getPhone());
+
+		user.setPass(PasswordStorage.base64Encode(hashedPassword));
+		user.setRoles(rolesRepository.findAllByName("PATIENT"));
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, 7);
+		date = calendar.getTime();
+		user.setExpire(date);
+		userRepository.save(user);
+		return "Patient is successfully added!";
+	}
+	
+
+	
+	
+	
 }
