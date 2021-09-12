@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="user")
 @NoArgsConstructor
@@ -110,6 +112,16 @@ public class User implements Serializable {
         return examinationsForPatient;
     }
     
-    //napraviti set Password for user metodu 
     
+    @JsonIgnore
+    public String getRolesAsString() {
+    	StringBuilder sb = new StringBuilder();
+    	
+    	for (Role role : this.roles) {
+    		sb.append(role.getName() + " ");
+    	}
+    	
+    	return sb.toString();
+    }
+
 }

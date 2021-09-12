@@ -8,17 +8,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import uns.ac.rs.ib.security.dto.*;
+import uns.ac.rs.ib.security.model.User;
 import uns.ac.rs.ib.security.security.TokenUtils;
 import uns.ac.rs.ib.security.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "api/users")
@@ -37,6 +42,35 @@ public class UserController {
     TokenUtils tokenUtils;
     
     
+    @PostMapping("/login")
+    public ResponseEntity<UserTokenStateDTO> login(@RequestBody JwtAuthenticationRequestDTO req, HttpServletResponse response) {
+    	
+    	try {
+    		
+    		//Authentication authentication = authenticationManager
+    			//	.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(),
+    				//		req.getPassword()));
+    		
+    		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword());
+
+    		// Ubaci korisnika u trenutni security kontekst
+    		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    		// Kreiraj token za tog korisnika
+    		User user = userService.findByEmail(req.getUsername());
+    		String jwt = tokenUtils.generateToken(user.getEmail());
+    		int expiresIn = tokenUtils.getExpiredIn();
+
+    		// Vrati token kao odgovor na uspesnu autentifikaciju
+    		return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return ResponseEntity.ok(new UserTokenStateDTO());
+    }
+    
+    /*
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> login (@RequestBody LoginDTO lDTO){
 		try {
