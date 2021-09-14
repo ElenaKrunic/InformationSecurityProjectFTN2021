@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "api/users")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -112,7 +113,7 @@ public class UserController {
     */
     
     @PostMapping("/register-clinic-center-admin")
-    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
+//    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<?> registerClinicCenterAdmin(@RequestBody UserDTORequest userDTORequest) {
     	try {
     		String register = userService.registerClinicCenterAdmin(userDTORequest);
@@ -124,7 +125,7 @@ public class UserController {
     }
     
     @PostMapping("/register-clinic-admin")
-    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
+//    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
     public ResponseEntity<?> registerClinicAdmin(@RequestBody UserDTORequest userDTORequest) {
         try {
             String mess = userService.registerClinicAdmin(userDTORequest);

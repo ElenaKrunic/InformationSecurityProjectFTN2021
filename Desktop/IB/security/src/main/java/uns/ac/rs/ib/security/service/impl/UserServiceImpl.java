@@ -17,6 +17,7 @@ import uns.ac.rs.ib.security.repository.ClinicRepository;
 import uns.ac.rs.ib.security.repository.RoleRepository;
 import uns.ac.rs.ib.security.repository.UserRepository;
 import uns.ac.rs.ib.security.security.PasswordStorage;
+import uns.ac.rs.ib.security.security.SecurityConfiguration;
 import uns.ac.rs.ib.security.service.UserService;
 import uns.ac.rs.ib.security.util.Base64;
 
@@ -29,8 +30,8 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	ClinicRepository clinicRepository;
 
-//	@Autowired
-//	SecurityConfiguration configuration;
+	@Autowired
+	SecurityConfiguration configuration;
 
 	@Autowired
 	RoleRepository rolesRepository;
@@ -75,10 +76,10 @@ public class UserServiceImpl implements UserService{
 		user.setEmail(userDtoRequest.getEmail());
 		user.setFirstname(userDtoRequest.getFirstname());
 		user.setLastname(userDtoRequest.getLastname());
-		user.setIdentifier(userDtoRequest.getId());
+		user.setIdentifier(userDtoRequest.getIdentifier());
 		user.setValidated((byte)1);
 		user.setPhoneNumber(userDtoRequest.getPhone());
-//		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
 		user.setClinic(clinicOptional.get());
 		user.setRoles(rolesRepository.findAllByName("CLINIC_ADMIN"));
 		Date date = new Date();
@@ -206,11 +207,12 @@ public class UserServiceImpl implements UserService{
 		user.setEmail(userDtoRequest.getEmail());
 		user.setFirstname(userDtoRequest.getFirstname());
 		user.setLastname(userDtoRequest.getLastname());
-		user.setIdentifier(userDtoRequest.getId());
+		user.setIdentifier(userDtoRequest.getIdentifier());
 		user.setValidated((byte)1);
 		user.setPhoneNumber(userDtoRequest.getPhone());
-//		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
 		user.setRoles(rolesRepository.findAllByName("CLINIC_CENTER_ADMIN"));
+		user.setClinic(clinicRepository.findOneById(userDtoRequest.getIdClinic()));
 		Date date = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);

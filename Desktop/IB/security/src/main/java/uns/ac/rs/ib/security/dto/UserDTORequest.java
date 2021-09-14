@@ -27,5 +27,5 @@ public class UserDTORequest {
 
     private Integer idClinic;
     
-    private String identifier; 
+    private String identifier;
 }

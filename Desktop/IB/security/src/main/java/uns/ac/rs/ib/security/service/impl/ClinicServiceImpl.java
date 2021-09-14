@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 
+import uns.ac.rs.ib.security.dto.ClinicDTORes;
 import uns.ac.rs.ib.security.model.Clinic;
 import uns.ac.rs.ib.security.repository.ClinicRepository;
 import uns.ac.rs.ib.security.service.ClinicService;

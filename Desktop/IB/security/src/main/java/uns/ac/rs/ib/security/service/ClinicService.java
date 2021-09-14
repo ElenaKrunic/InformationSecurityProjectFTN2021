@@ -2,6 +2,7 @@ package uns.ac.rs.ib.security.service;
 
 import java.util.List;
 
+import uns.ac.rs.ib.security.dto.ClinicDTORes;
 import uns.ac.rs.ib.security.model.Clinic;
 
 public interface ClinicService {
@@ -15,7 +16,6 @@ public interface ClinicService {
 
 	void remove(Integer id);
 	///////////////////////////////////////////
-
 
 
 }

@@ -45,8 +45,6 @@ public interface UserService {
 	String registerPatient(UserDTORequest userDtoRequest) throws Exception;
 	
 	String registerNurse(UserDTORequest userDtoRequest) throws Exception;
-
-	
 	
 
 }
