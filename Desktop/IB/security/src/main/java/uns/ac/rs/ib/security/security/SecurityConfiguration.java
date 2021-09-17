@@ -59,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	      		.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
 	      		//.and().authorizeRequests().antMatchers("/api/users/login").permitAll()
 	      		.and().authorizeRequests().antMatchers("/api/users/login").permitAll()
+				.antMatchers("api/clinics/all").permitAll()
 	      		.antMatchers("api/users/register-clinic-center-admin").permitAll()
 	      		.antMatchers("api/users/register-clinic-center-admin").permitAll()
 	      		.antMatchers("api/users/register-clinic-admin").permitAll()

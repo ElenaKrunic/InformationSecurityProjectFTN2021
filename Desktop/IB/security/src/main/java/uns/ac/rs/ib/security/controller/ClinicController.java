@@ -26,7 +26,6 @@ public class ClinicController {
 	ClinicRepository clinicRepository;
 
 	@GetMapping(value="/all")
-//    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN') || hasAuthority('PATIENT')")
 	public ResponseEntity<List<ClinicDTORes>> getClinics() {
 		List<Clinic> clinics = clinicService.findAll(); 
 		List<ClinicDTORes> clinicsDTO = new ArrayList<>();
