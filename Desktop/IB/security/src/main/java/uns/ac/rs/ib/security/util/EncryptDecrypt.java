@@ -2,11 +2,10 @@ package uns.ac.rs.ib.security.util;
 
 import javax.crypto.Cipher;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.*;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -14,6 +13,22 @@ import java.util.Base64;
 
 public class EncryptDecrypt {
     public static void main(String[] args) throws Exception {
+
+//        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+//        generator.initialize(2048);
+//        KeyPair pair = generator.generateKeyPair();
+//
+//        PrivateKey privateKey = pair.getPrivate();
+//        PublicKey publicKey = pair.getPublic();
+//
+//        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\Svetozar\\git\\InformationSecurityProject_FTN_2021\\Desktop\\IB\\security\\src\\main\\resources\\cert\\public.key")) {
+//            fos.write(publicKey.getEncoded());
+//        }
+//
+//        try (FileOutputStream fos = new FileOutputStream("C:\\Users\\Svetozar\\git\\InformationSecurityProject_FTN_2021\\Desktop\\IB\\security\\src\\main\\resources\\cert\\private.key")) {
+//            fos.write(privateKey.getEncoded());
+//        }
+
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
         File publicKeyFile = new File("C:\\Users\\Svetozar\\git\\InformationSecurityProject_FTN_2021\\Desktop\\IB\\security\\src\\main\\resources\\cert\\public.key");

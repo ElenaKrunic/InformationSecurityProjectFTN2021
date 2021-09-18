@@ -204,8 +204,9 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 
 	public String sifrujTekst(String tekst) throws Exception {
 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-		Resource resource = loadPublicKeyFile();
-		File publicKeyFile = new File(resource.getURI());
+//		Resource resource = loadPublicKeyFile();
+//		File publicKeyFile = new File(resource.getURI());
+		File publicKeyFile = new File("C:\\Users\\Svetozar\\git\\InformationSecurityProject_FTN_2021\\Desktop\\IB\\security\\src\\main\\resources\\cert\\public.key");
 		byte[] publicKeyBytes = Files.readAllBytes(publicKeyFile.toPath());
 		EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
 		PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
@@ -219,18 +220,11 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 		return encodedMessage;
 	}
 
-	public Resource loadPublicKeyFile() {
-		return new ClassPathResource("cert/public.key");
-	}
-
-	public Resource loadPrivateKeyFile() {
-		return new ClassPathResource("cert/private.key");
-	}
-
 	public String desifrujTekst(String tekst) throws Exception {
+
 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-		Resource resource = loadPrivateKeyFile();
-		File privateKeyFile = new File(resource.getURI());
+
+		File privateKeyFile = new File("C:\\Users\\Svetozar\\git\\InformationSecurityProject_FTN_2021\\Desktop\\IB\\security\\src\\main\\resources\\cert\\private.key");
 		byte[] privateKeyBytes = Files.readAllBytes(privateKeyFile.toPath());
 		PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
 		PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
@@ -238,9 +232,10 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 		Cipher decryptCipher = Cipher.getInstance("RSA");
 		decryptCipher.init(Cipher.DECRYPT_MODE, privateKey);
 
-		byte[] encryptedMessageBytes = Base64.getDecoder().decode(tekst);
-		byte[] decryptedMessageBytes = decryptCipher.doFinal(encryptedMessageBytes);
+		byte[] encryptedMessageBytes2 = Base64.getDecoder().decode(tekst);
+		byte[] decryptedMessageBytes = decryptCipher.doFinal(encryptedMessageBytes2);
 		String decryptedMessage = new String(decryptedMessageBytes, StandardCharsets.UTF_8);
+
 		return decryptedMessage;
 	}
 }

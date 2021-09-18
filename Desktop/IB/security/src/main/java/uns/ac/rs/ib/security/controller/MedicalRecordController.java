@@ -94,9 +94,11 @@ public class MedicalRecordController {
 	}
 
 	@GetMapping("/record-patient/{id}")
-    @PreAuthorize("hasAuthority('DOCTOR') || hasAuthority('NURSE')")
+//    @PreAuthorize("hasAuthority('DOCTOR') || hasAuthority('NURSE')")
 	public ResponseEntity<?> recordPatient(@PathVariable("id") int id) {//, Principal principal
+//		System.out.println(principal.getName() + " name logged user");
 		try {
+
 			List<MedicialRecordDTOs> logs = medicalRecordService.recordOfPatient(id, "jevrosimatajna@gmail.com");
 			return new ResponseEntity<>(logs, HttpStatus.OK);
 		} catch (Exception e) {
@@ -107,10 +109,10 @@ public class MedicalRecordController {
 	
 	
 	@PostMapping("/add-note")
-    @PreAuthorize("hasAuthority('DOCTOR')")
-	public ResponseEntity<?> addNote(@RequestBody MedicalRecordDTO medicalRecordDTO) {//, Principal principal
+//    @PreAuthorize("hasAuthority('DOCTOR')")
+	public ResponseEntity<?> addNote(@RequestBody MedicalRecordDTO medicalRecordDTO, Principal principal) {//, Principal principal
 		try {
-			String message = medicalRecordService.addNote(medicalRecordDTO, "jevrosimatajna@gmail.com");
+			String message = medicalRecordService.addNote(medicalRecordDTO, principal.getName());
 			return new ResponseEntity<>(new StringResponseDTO(message), HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,7 +138,7 @@ public class MedicalRecordController {
     @PreAuthorize("hasAuthority('PATIENT')")
 	public ResponseEntity<?> mojKarton(Principal principal) {
 		try {
-			List<MedicialRecordDTOs> logovi = medicalRecordService.myRecord("lelekrunic1@gmail.com");
+			List<MedicialRecordDTOs> logovi = medicalRecordService.myRecord(principal.getName());
 			return new ResponseEntity<>(logovi, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

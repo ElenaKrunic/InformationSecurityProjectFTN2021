@@ -22,7 +22,7 @@ public class Role implements GrantedAuthority {
     @Column(name = "_name", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy="roles")
+    @ManyToMany(mappedBy="roles", fetch = FetchType.EAGER)
     private List<User> users;
 
 	@Override

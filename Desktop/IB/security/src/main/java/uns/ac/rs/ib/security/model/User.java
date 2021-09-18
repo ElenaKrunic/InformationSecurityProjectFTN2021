@@ -56,7 +56,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy="patient")
     private List<Examination> examinationsForPatient;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="role_has_user"
             , joinColumns={
