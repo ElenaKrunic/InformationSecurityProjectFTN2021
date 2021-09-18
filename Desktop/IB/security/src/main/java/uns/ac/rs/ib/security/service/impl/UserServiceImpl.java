@@ -238,11 +238,11 @@ public class UserServiceImpl implements UserService{
 		user.setEmail(userDtoRequest.getEmail());
 		user.setFirstname(userDtoRequest.getFirstname());
 		user.setLastname(userDtoRequest.getLastname());
-		user.setIdentifier(userDtoRequest.getId());
+		user.setIdentifier(userDtoRequest.getIdentifier());
 		user.setValidated((byte)1);
 		user.setPhoneNumber(userDtoRequest.getPhone());
-//		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
-		user.setClinic(clinicOptional.get());
+		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+		user.setClinic(clinicRepository.findOneById(userDtoRequest.getIdClinic()));
 		user.setRoles(rolesRepository.findAllByName("DOCTOR"));
 		Date date = new Date();
 		Calendar calendar = Calendar.getInstance();
@@ -271,11 +271,11 @@ public class UserServiceImpl implements UserService{
 		user.setEmail(userDtoRequest.getEmail());
 		user.setFirstname(userDtoRequest.getFirstname());
 		user.setLastname(userDtoRequest.getLastname());
-		user.setIdentifier(userDtoRequest.getId());
+		user.setIdentifier(userDtoRequest.getIdentifier());
 		user.setValidated((byte)1);
 		user.setPhoneNumber(userDtoRequest.getPhone());
-//		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
-		user.setPass(userDtoRequest.getPass());
+		user.setPass(configuration.passwordEncoder().encode(userDtoRequest.getPass()));
+//		user.setPass(userDtoRequest.getPass());
 		user.setClinic(clinicOptional.get());
 		user.setRoles(rolesRepository.findAllByName("NURSE"));
 		Date date = new Date();
@@ -311,6 +311,7 @@ public class UserServiceImpl implements UserService{
 		user.setValidated((byte)1);
 		user.setPhoneNumber(userDtoRequest.getPhone());
 
+		user.setClinic(clinicRepository.findOneById(userDtoRequest.getIdClinic()));
 		user.setPass(PasswordStorage.base64Encode(hashedPassword));
 		user.setRoles(rolesRepository.findAllByName("PATIENT"));
 		Date date = new Date();

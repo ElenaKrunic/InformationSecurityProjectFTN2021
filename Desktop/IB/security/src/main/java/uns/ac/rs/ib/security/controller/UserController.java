@@ -137,7 +137,7 @@ public class UserController {
     
     
     @PostMapping("/register-doctor")
-    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
+//    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
     public ResponseEntity<?> registerDoctor(@RequestBody UserDTORequest userDTORequest) {
     	try {
     		String register = userService.registerDoctor(userDTORequest);
@@ -149,7 +149,7 @@ public class UserController {
     }
     
     @PostMapping("/register-nurse")
-    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
+//    @PreAuthorize("hasAuthority('CLINIC_ADMIN')")
     public ResponseEntity<?> registerNurse(@RequestBody UserDTORequest userDTORequest) {
     	try {
     		String register = userService.registerNurse(userDTORequest);
