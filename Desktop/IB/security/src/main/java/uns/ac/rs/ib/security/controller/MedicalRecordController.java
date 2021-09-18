@@ -95,11 +95,10 @@ public class MedicalRecordController {
 
 	@GetMapping("/record-patient/{id}")
 //    @PreAuthorize("hasAuthority('DOCTOR') || hasAuthority('NURSE')")
-	public ResponseEntity<?> recordPatient(@PathVariable("id") int id) {//, Principal principal
-//		System.out.println(principal.getName() + " name logged user");
+	public ResponseEntity<?> recordPatient(@PathVariable("id") int id, Principal principal) {
 		try {
 
-			List<MedicialRecordDTOs> logs = medicalRecordService.recordOfPatient(id, "jevrosimatajna@gmail.com");
+			List<MedicialRecordDTOs> logs = medicalRecordService.recordOfPatient(id, principal.getName());
 			return new ResponseEntity<>(logs, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,7 +108,7 @@ public class MedicalRecordController {
 	
 	
 	@PostMapping("/add-note")
-//    @PreAuthorize("hasAuthority('DOCTOR')")
+    @PreAuthorize("hasAuthority('DOCTOR')")
 	public ResponseEntity<?> addNote(@RequestBody MedicalRecordDTO medicalRecordDTO, Principal principal) {//, Principal principal
 		try {
 			String message = medicalRecordService.addNote(medicalRecordDTO, principal.getName());
