@@ -3,10 +3,13 @@ package uns.ac.rs.ib.security.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import uns.ac.rs.ib.security.model.User;
+import uns.ac.rs.ib.security.repository.UserRepository;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +29,9 @@ public class TokenUtils {
 	 
 	@Value("Authorization")
 	private String AUTH_HEADER;
+
+	@Autowired
+	UserRepository userRepository;
 	
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
@@ -85,12 +91,15 @@ public class TokenUtils {
 	 // Funkcija za generisanje JWT token
 		
 		public String generateToken(String username) {
+			User u = userRepository.findByEmail(username);
+			System.out.println(u.getRoles().get(0).getAuthority() + " ROLEEEEE");
 			return Jwts.builder()
 					.setIssuer(APP_NAME)
 					.setSubject(username)
 					//.setAudience(generateAudience())
 					.setIssuedAt(new Date())
 					.setExpiration(generateExpirationDate())
+					.claim("role", u.getRoles().get(0).getAuthority())
 					// .claim("key", value) 
 					.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 		}
