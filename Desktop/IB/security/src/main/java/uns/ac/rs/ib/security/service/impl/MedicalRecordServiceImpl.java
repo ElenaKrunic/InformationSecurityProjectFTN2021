@@ -136,7 +136,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 		medicalRecord.setExamination(examination);
 		medicalRecord.setTime(new Date());
 
-		DiagnosisDTO encryptedDiagnosis = new DiagnosisDTO(medicalRecordDTOReq.getDisease(), medicalRecord.getNote());
+		DiagnosisDTO encryptedDiagnosis = new DiagnosisDTO(medicalRecordDTOReq.getDisease(), medicalRecordDTOReq.getNote());
 
 		StringWriter sw = new StringWriter();
 		JAXB.marshal(encryptedDiagnosis, sw);
@@ -198,6 +198,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService{
 				tmp.setDisease(getTagValue(desifrovanaDijagnoza, "disease"));
 				tmp.setNote(getTagValue(desifrovanaDijagnoza, "note"));
 			}
+			response.add(tmp);
 		}
 		return response;
 	}

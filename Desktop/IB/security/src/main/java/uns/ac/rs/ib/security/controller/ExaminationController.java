@@ -33,7 +33,6 @@ public class ExaminationController {
 	HealthSerService healthService; 
 	
 	@GetMapping(value="/all")
-    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<List<ExaminationDTO>> getExaminations(){
 		List<Examination> examinations = examinationService.findAll(); 
 		List<ExaminationDTO> examinationsDTO = new ArrayList<>();

@@ -94,7 +94,7 @@ public class MedicalRecordController {
 	}
 
 	@GetMapping("/record-patient/{id}")
-    @PreAuthorize("hasAuthority('DOCTOR') || hasAuthority('NURSE')")
+    @PreAuthorize("hasAuthority('DOCTOR') || hasAuthority('NURSE') || hasAuthority('PATIENT')")
 	public ResponseEntity<?> recordPatient(@PathVariable("id") int id, Principal principal) {
 		try {
 
