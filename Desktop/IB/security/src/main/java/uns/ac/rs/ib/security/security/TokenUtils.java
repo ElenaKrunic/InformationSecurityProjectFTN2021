@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Component
 public class TokenUtils {
 	
@@ -24,7 +26,7 @@ public class TokenUtils {
 	 @Value("myXAuthSecret")
 	 private String SECRET;
 
-	 @Value("30000")
+	 @Value("300000")
 	 private int EXPIRES_IN;
 	 
 	@Value("Authorization")
@@ -87,8 +89,6 @@ public class TokenUtils {
 		public int getExpiredIn() {
 			return EXPIRES_IN;
 		}
-	    
-	 // Funkcija za generisanje JWT token
 		
 		public String generateToken(String username) {
 			User u = userRepository.findByEmail(username);
@@ -104,19 +104,56 @@ public class TokenUtils {
 					.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 		}
 		
-		
-		//stara metoda 
-	    /*
-	    public String generateToken(UserDetails userDetails) {
-	        Map<String, Object> claims = new HashMap<String, Object>();
-	        claims.put("sub", userDetails.getUsername());
-	        claims.put("created", new Date(System.currentTimeMillis()));
-	        return Jwts.builder().setClaims(claims).setExpiration(new Date(System.currentTimeMillis() * 2))
-	                .signWith(SignatureAlgorithm.HS512, SECRET).compact();
-	    }
-*/
-		
+		public String refreshToken(String token) {
+			String refreshedToken;
+			try {
+				final Claims claims = this.getClaimsFromToken(token);
+				claims.setIssuedAt(new Date());
+				refreshedToken = Jwts.builder()
+						.setClaims(claims)
+						.setExpiration(generateExpirationDate())
+						.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
+			} catch (Exception e) {
+				refreshedToken = null;
+			}
+			return refreshedToken;
+		}
+
+		public boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {
+			final Date created = this.getIssuedAtDateFromToken(token);
+			return (!(this.isCreatedBeforeLastPasswordReset(created, lastPasswordReset))
+					&& (!(this.isTokenExpired(token)) ));
+		}
 		
 
+		public Date getIssuedAtDateFromToken(String token) {
+			Date issueAt;
+			try {
+				final Claims claims = this.getClaimsFromToken(token);
+				issueAt = claims.getIssuedAt();
+			} catch (Exception e) {
+				issueAt = null;
+			}
+			return issueAt;
+		}
 	
+		private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
+			return (lastPasswordReset != null && created.before(lastPasswordReset));
+		}
+		
+		public String getAuthHeaderFromHeader(HttpServletRequest request) {
+			return request.getHeader(AUTH_HEADER);
+		}
+		
+		public String getToken(HttpServletRequest request) {
+			String authHeader = getAuthHeaderFromHeader(request);
+
+			if (authHeader != null && authHeader.startsWith("Bearer ")) {
+				return authHeader.substring(7);
+			}
+
+			return null;
+		}
+		
+		
 }

@@ -23,6 +23,7 @@ import uns.ac.rs.ib.security.service.UserService;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -46,23 +47,16 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserTokenStateDTO> login(@RequestBody JwtAuthenticationRequestDTO req, HttpServletResponse response) {
     	
-    	try {
-    		
-    		//Authentication authentication = authenticationManager
-    			//	.authenticate(new UsernamePasswordAuthenticationToken(req.getUsername(),
-    				//		req.getPassword()));
-    		
+    	try {		
     		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword());
 
     		// Ubaci korisnika u trenutni security kontekst
     		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    		// Kreiraj token za tog korisnika
     		User user = userService.findByEmail(req.getUsername());
     		String jwt = tokenUtils.generateToken(user.getEmail());
     		int expiresIn = tokenUtils.getExpiredIn();
 
-    		// Vrati token kao odgovor na uspesnu autentifikaciju
     		return ResponseEntity.ok(new UserTokenStateDTO(jwt, expiresIn));
     	} catch(Exception e) {
     		e.printStackTrace();
@@ -71,46 +65,24 @@ public class UserController {
     	return ResponseEntity.ok(new UserTokenStateDTO());
     }
     
-    /*
-	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> login (@RequestBody LoginDTO lDTO){
-		try {
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(lDTO.getUsername(), lDTO.getPassword());
-            UserDetails details = userDetailsService.loadUserByUsername(lDTO.getUsername());
-            System.out.println("details"+details);
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-            return new ResponseEntity<String>(tokenUtils.generateToken(details), HttpStatus.OK);
-        } catch (Exception ex) {
-        	ex.printStackTrace();
-            return new ResponseEntity<String>("Login failed", HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping(value = "/refresh")
+	public ResponseEntity<UserTokenStateDTO> refreshAuthenticationToken(HttpServletRequest request) {
+
+		String token = tokenUtils.getToken(request);
+		String username = this.tokenUtils.getUsernameFromToken(token);
+		User user = (User) this.userDetailsService.loadUserByUsername(username);
+
+		if (this.tokenUtils.canTokenBeRefreshed(token, user.getExpire())) {
+			String refreshedToken = tokenUtils.refreshToken(token);
+			int expiresIn = tokenUtils.getExpiredIn();
+
+			return ResponseEntity.ok(new UserTokenStateDTO(refreshedToken, expiresIn));
+		} else {
+			UserTokenStateDTO userTokenState = new UserTokenStateDTO();
+			return ResponseEntity.badRequest().body(userTokenState);
+		}
 	}
-	
-	
-    
-    /*
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> login(@RequestBody LoginDTO user) {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(),
-                user.getPassword());
-        Authentication authentication = authenticationManager.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetails details = userDetailsService.loadUserByUsername(user.getUsername());
-        User userDb = userService.findByEmail(user.getUsername());
-        LoggedInUserDTO loggedIn = new LoggedInUserDTO(userDb.getId(), tokenUtils.generateToken(details),
-                userDb.getEmail(), details.getUsername(), details.getAuthorities());
-        if (userDb.getValidiran() != 1) {
-            return new ResponseEntity<>(new SimpleStringResponseDTO("Nalog nije aktivan"), HttpStatus.BAD_REQUEST);
-        }
-        if (userDb.getExpire()!=null && userDb.getExpire().before(new Date())){
-            return new ResponseEntity<>(new SimpleStringResponseDTO("Vreme za promenu passworda isteklo"), HttpStatus.BAD_REQUEST);
-        }
-        if(userDb.getExpire()!=null){
-            loggedIn.setChangePass(true);
-        }
-        return new ResponseEntity<>(loggedIn, HttpStatus.OK);
-    }
-    */
+
     
     @PostMapping("/register-clinic-center-admin")
 //    @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
