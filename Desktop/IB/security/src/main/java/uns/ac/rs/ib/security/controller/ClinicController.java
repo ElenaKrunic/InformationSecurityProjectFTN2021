@@ -47,7 +47,7 @@ public class ClinicController {
 		return new ResponseEntity<ClinicDTORes>(new ClinicDTORes(clinic), HttpStatus.OK);
 	}
 	
-	@PostMapping(consumes = "application/json")
+	@PostMapping(consumes = "application/json", value="/saveClinic")
     @PreAuthorize("hasAuthority('CLINIC_CENTER_ADMIN')")
 	public ResponseEntity<ClinicDTORes> saveClinic(@RequestBody ClinicDTORes clinicDTO) {
 		Clinic clinic = new Clinic(); 
