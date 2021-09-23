@@ -17,5 +17,5 @@ public interface ClinicService {
 	void remove(Integer id);
 	///////////////////////////////////////////
 
-
+	List<ClinicDTORes> findByName(String name);
 }

@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import uns.ac.rs.ib.security.dto.ClinicDTORes;
+import uns.ac.rs.ib.security.dto.UserDTOResponse;
 import uns.ac.rs.ib.security.model.Clinic;
 import uns.ac.rs.ib.security.repository.ClinicRepository;
 import uns.ac.rs.ib.security.service.ClinicService;
@@ -90,5 +91,11 @@ public class ClinicController {
 		}
 		
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);		
+	}
+
+	@GetMapping(value = "filter/{aaa}")
+	public ResponseEntity<List<ClinicDTORes>> filterClinics(@PathVariable("aaa") String name){
+		List<ClinicDTORes> clinics = clinicService.findByName(name);
+		return new ResponseEntity<>(clinics, HttpStatus.OK);
 	}
 }
