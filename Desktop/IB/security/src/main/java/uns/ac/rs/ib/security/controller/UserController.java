@@ -172,6 +172,31 @@ public class UserController {
             return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
     }
+    
+    @PutMapping("/editNurse")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN') || hasAuthority('CLINIC_CENTER_ADMIN') ")
+    public ResponseEntity<?> editNurse(@RequestBody UserDTOEdit userDTORequest, Principal principal) {
+        try {
+            String poruka = userService.editProfile(userDTORequest, principal.getName());
+            return new ResponseEntity<>(new StringResponseDTO(poruka), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+    
+    @PutMapping("/editDoctor")
+    @PreAuthorize("hasAuthority('CLINIC_ADMIN') || hasAuthority('CLINIC_CENTER_ADMIN') ")
+    public ResponseEntity<?> editDoctor(@RequestBody UserDTOEdit userDTORequest, Principal principal) {
+        try {
+            String poruka = userService.editProfile(userDTORequest, principal.getName());
+            return new ResponseEntity<>(new StringResponseDTO(poruka), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(new StringResponseDTO(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @PutMapping("/edit")
     @PreAuthorize("hasAuthority('PATIENT') || hasAuthority('NURSE') || hasAuthority('DOCTOR') ")
